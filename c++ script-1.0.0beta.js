@@ -1,28 +1,3 @@
-/*
-	中文(Chinese)
-	C/C++语言转javascript语言c++-script-1.0.0beta.js
-	先导入js{
-		<script src="c++-script-1.0.0beta.js"></script>
-	}
-	然后右键点击检查，点击控制台
-	!!!
-		警告: 写的时候要写到行注释里面，否则无效
-		警告: c(scriptID,coutID)
-	!!!
-
-	English(English)
-	C/C++ language to JavaScript language C++-script-1.0.0beta .js
-
-	Import js{
-		<script src="c++-script-1.0.0beta.js"></script>
-
-	}
-	Then right-click Check and click Console
-	!!!
-		Warning: Write in a line comment, otherwise it will not work
-	!!!
-*/
-
 function c(temp) {
 	if (temp.innerHTML.indexOf("\/\*",0) != -1) {} else {return;}
 	if (temp.innerHTML.indexOf("\*\/",temp.innerHTML.length - 5) != -1) {} else {return;}
