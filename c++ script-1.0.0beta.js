@@ -1,6 +1,13 @@
-function c(temp) {
-	if (temp.innerHTML.indexOf("\/\*",0) != -1) {} else {return;}
-	if (temp.innerHTML.indexOf("\*\/",temp.innerHTML.length - 5) != -1) {} else {return;}
+function c() {
+	var s = document.getElementsByTagName('script');
+	for (var x = 0; x < s.length; x++) {
+		if (s[x].innerHTML.indexOf("\/\*",0) != -1 || s[x].innerHTML.indexOf("\*\/",s[x].innerHTML.length - 5) != -1) {
+			var temp = s[x];
+			break;
+		}
+	}
+	if (temp.innerHTML.indexOf("\/\*",0) == -1) {return;}
+	if (temp.innerHTML.indexOf("\*\/",temp.innerHTML.length - 5) == -1) {return;}
 	if (temp.innerHTML.search(RegExp("#include <iostream>")) != -1) {var stream = true;} else {var stream = false;}
 	if (temp.innerHTML.search(RegExp("using namespace std;")) != -1) {var np = true;} else {var np = false;}
 	temp.innerHTML = temp.innerHTML.replace(/(\w*)#include(.*)<(.*)>/g,"// #include  <$3>");
@@ -28,7 +35,8 @@ function c(temp) {
 		temp.innerHTML = temp.innerHTML.replace(RegExp("endl","g"),"\"<br>\"");
 		temp.innerHTML = temp.innerHTML.replace(RegExp(/\/\*/,"g"),"");
 		temp.innerHTML = temp.innerHTML.replace(RegExp(/\*\//,"g"),"");
+		if (temp.innerHTML.search("function main() {") != -1) {temp.innerHTML = temp.innerHTML + "main();";}
 	}
 	console.log(temp.innerHTML);
 }
-c(document.getElementById("c++"));
+c();
