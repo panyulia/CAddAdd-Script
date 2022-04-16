@@ -10,7 +10,6 @@ function c() {
 	if (temp.innerHTML.indexOf("\*\/",temp.innerHTML.length - 5) == -1) {return;}
 	if (temp.innerHTML.search(RegExp("#include <iostream>")) != -1) {var stream = true;} else {var stream = false;}
 	if (temp.innerHTML.search(RegExp("using namespace std;")) != -1) {var np = true;} else {var np = false;}
-	temp.innerHTML = temp.innerHTML.replace(/(\w*)#include(.*)<(.*)>/g,"// #include  <$3>");
 	if (stream == true) {
 		temp.innerHTML = temp.innerHTML.replace(RegExp("#include <iostream>","g"),"// #include <iostream>")
 		temp.innerHTML = temp.innerHTML.replace(RegExp("using namespace std;","g"),"// using namespace std;")
@@ -21,14 +20,14 @@ function c() {
 		temp.innerHTML = temp.innerHTML.replace(RegExp("<<","g"),"+");
 		temp.innerHTML = temp.innerHTML.replace(RegExp(">>","g"),"");
 		if (np == true) {
-			temp.innerHTML = temp.innerHTML.replace(RegExp("std::cout","g"),"textp.innerHTML =");
+			temp.innerHTML = temp.innerHTML.replace(RegExp(/std::cout[ ]\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 			temp.innerHTML = temp.innerHTML.replace(RegExp(/(\w*)std::cin(.*)(.*);/, "g"), "$2=prompt();");
 			temp.innerHTML = temp.innerHTML.replace(RegExp("std::cin","g"),"");
-			temp.innerHTML = temp.innerHTML.replace(RegExp("cout","g"),"textp.innerHTML =");
+			temp.innerHTML = temp.innerHTML.replace(RegExp(/cout[ ]\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 			temp.innerHTML = temp.innerHTML.replace(RegExp(/(\w*)cin(.*)(.*);/, "g"), "$2=prompt();");
 			temp.innerHTML = temp.innerHTML.replace(RegExp("cin","g"),"");
 		} else {
-			temp.innerHTML = temp.innerHTML.replace(RegExp("std::cout","g"),"textp.innerHTML =");
+			temp.innerHTML = temp.innerHTML.replace(RegExp(/std::cout[ ]\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 			temp.innerHTML = temp.innerHTML.replace(RegExp(/(\w*)std::cin(.*)(.*);/, "g"), "$2=prompt();");
 			temp.innerHTML = temp.innerHTML.replace(RegExp("std::cin","g"),"");
 		}
@@ -36,6 +35,7 @@ function c() {
 		temp.innerHTML = temp.innerHTML.replace(RegExp(/\/\*/,"g"),"");
 		temp.innerHTML = temp.innerHTML.replace(RegExp(/\*\//,"g"),"");
 		if (temp.innerHTML.search("function main() {") != -1) {temp.innerHTML = temp.innerHTML + "main();";}
+		temp.innerHTML = temp.innerHTML.replace(/(\w*)#include(.*)<(.*)>/g,"// #include  <$3>");
 	}
 	console.log(temp.innerHTML);
 }
