@@ -1,5 +1,4 @@
-
- 
+<a href="javascript:void(0)" onclick="document.documentElement.innerHTML=''">delete</a>
  - C/C++语言转javascript语言
  - 例如，在要识别为C++代码的脚本元素的开头和结尾处进行注释
  - /*
@@ -12,4 +11,3 @@
  -  #include <iostream>
  -  using namespace std;
  - */
-
