@@ -5,10 +5,17 @@ function re(id,test1,test2) {
 function c() {
 	var s = document.getElementsByTagName('script');
 	for (var x = 0; x < s.length; x++) {
-		if (s[x].innerHTML.indexOf("\/\*",0) != -1 || s[x].innerHTML.indexOf("\*\/",s[x].innerHTML.length - 5) != -1) {
+		if (s[x].innerHTML.indexOf("\/\*",0) != -1 && s[x].innerHTML.indexOf("\*\/",s[x].innerHTML.length - 5) != -1) {
 			var temp = s[x];
+			var iff = true;
 			break;
+		} else {
+			var iff = false;
 		}
+	}
+	if (iff == !true) {
+		console.clear();
+		return;
 	}
 	if (temp.innerHTML.indexOf("\/\*",0) == -1) {return;}
 	if (temp.innerHTML.indexOf("\*\/",temp.innerHTML.length - 5) == -1) {return;}
@@ -44,4 +51,3 @@ function c() {
 	console.log(temp.innerHTML);
 }
 c();
-
