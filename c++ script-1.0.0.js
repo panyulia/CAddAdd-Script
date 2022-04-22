@@ -50,4 +50,4 @@ function c() {
 	}
 	console.log(temp.innerHTML);
 }
-c();
+window.onload=c;
