@@ -3,6 +3,7 @@ function re(id,test1,test2) {
 	return ret;
 }
 function a_crypt(text) {
+	console.clear();
 	var key=new Array(52);
 	for (var i = 0;i <= text.length;i++) {
 		text[i] = text.slice(i,i+1);
@@ -13,6 +14,7 @@ function a_crypt(text) {
 	}
 }
 function b_crypt(text1,text2,text3,text4,text5) {
+	console.clear();
 	var key=new Array(52);
 	return String.fromCharCode(text1,text2,text3,text4,text5);
 }
