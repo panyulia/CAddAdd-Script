@@ -2,12 +2,26 @@ function re(id,test1,test2) {
 	var ret = id.innerHTML = id.innerHTML.replace(test1,test2);
 	return ret;
 }
+function a_crypt(text) {
+	var key=new Array(52);
+	for (var i = 0;i <= text.length;i++) {
+		text[i] = text.slice(i,i+1);
+	}
+	document.body.innerHTML = "";
+	for (var i = 0;i <= (text.length - 1);i++) {
+		console.log(text[i].charCodeAt());
+	}
+}
+function b_crypt(text1,text2,text3,text4,text5) {
+	var key=new Array(52);
+	return String.fromCharCode(text1,text2,text3,text4,text5);
+}
 function c() {
 	var s = document.getElementsByTagName('script');
 	for (var x = 0; x < s.length; x++) {
 		if (s[x].innerHTML.indexOf("\/\*",0) != -1 && s[x].innerHTML.indexOf("\*\/",s[x].innerHTML.length - 5) != -1) {
 			var temp = s[x];
-			var iff = true;
+			var iff = true
 			break;
 		} else {
 			var iff = false;
