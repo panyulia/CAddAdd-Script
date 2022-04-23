@@ -22,10 +22,8 @@ function c() {
 	if (temp.innerHTML.search(RegExp("#include <iostream>")) != -1) {var stream = true;} else {var stream = false;}
 	if (temp.innerHTML.search(RegExp("using namespace std;")) != -1) {var np = true;} else {var np = false;}
 	if (stream == true) {
-		re(temp,RegExp("#include <iostream>","g"),"// #include <iostream>")
 		re(temp,RegExp("using namespace std;","g"),"// using namespace std;")
 		re(temp,RegExp("int main()","g"),"function main")
-		re(temp,RegExp("#include <window.h>","g"),"// #include <window.h>");
 		re(temp,RegExp("int","g"),"var");
 		re(temp,RegExp("\%\%","g"),"\%");
 		re(temp,RegExp("<<","g"),"+");
@@ -49,5 +47,18 @@ function c() {
 		re(temp,/(\w*)#include(.*)<(.*)>/g,"// #include  <$3>");
 	}
 	console.log(temp.innerHTML);
+	re(temp,/\</g,"&lt;");
+	re(temp,/\>/g,"&gt;");
+	re(temp,/[	]/g,"&emsp;");
+	re(temp,/[\n]/g,"<br>");
+	document.body.innerHTML = temp.innerHTML + document.body.innerHTML;
+	document.onkeydown = function(e){
+		var e = e || window.event,
+			t = e.target || e.srcElement;
+		if (e.ctrlKey && e.keyCode == 67) {
+			e.preventDefault();
+			alert("请打开控制台复制")
+		}
+	}
 }
 window.onload=c;
