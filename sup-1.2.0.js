@@ -16,6 +16,19 @@ var clear=function(){console.clear();}
 var log=function(text){console.log(text);}
 var warn=function(text){console.warn(text);}
 var error=function(text){console.error(text);}
+for (var i=0;i <= $("*").length-1;i++) {
+	$("*")[i].html = function(text) {
+		if (text != undefined) {
+			this.innerHTML = text;
+			return this.innerHTML;
+		} else {
+			return this;
+		}
+	}
+	$("*")[i].get = function(text) {
+		return this.innerHTML;
+	}
+}
 var sup={
 	correct : function(text){
 		return text.charCodeAt();
