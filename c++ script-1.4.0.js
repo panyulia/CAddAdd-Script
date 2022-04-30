@@ -7,7 +7,8 @@ function debug(mode,session) {
 		github: undefined,
 		a_crypt: "text",
 		b_crypt: "text",
-		help: undefined
+		help: undefined,
+		vesion: "1.3.1"
 	}
 	if (mode == "help" && session == undefined) {
 		return helplog;
@@ -27,8 +28,10 @@ function debug(mode,session) {
 			temp = temp + String.fromCharCode(session.slice(i, i+1));
 		}
 		return temp;
+	} else if (mode == "vesion") {
+		return helplog.vesion;
 	} else {
-		console.error("Error: mode = "+mode+"; session = "+session+";");
+		console.error("Error: not mode or session");
 		return;
 	}
 }
@@ -61,13 +64,13 @@ function c() {
 		re(temp,RegExp(/std::cout[ ]\+(.*)/,"g"),"textp.innerHTML = $1");
 		re(temp,RegExp(/std::cout\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 		re(temp,RegExp(/std::cout\+(.*)/,"g"),"textp.innerHTML = $1");
-		re(temp,RegExp(/(\w*)std::cin(.*)(.*);/, "g"), "$2=prompt();");
+		re(temp,RegExp(/(\w*)std::cin(.*)(.*);/, "g"), "$2=prompt(\"$2=\");");
 		re(temp,RegExp("std::cin","g"),"");
 		re(temp,RegExp(/cout[ ]\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 		re(temp,RegExp(/cout[ ]\+(.*)/,"g"),"textp.innerHTML = $1");
 		re(temp,RegExp(/cout\+[ ](.*)/,"g"),"textp.innerHTML = $1");
 		re(temp,RegExp(/cout\+(.*)/,"g"),"textp.innerHTML = $1");
-		re(temp,RegExp(/(\w*)cin(.*)(.*);/, "g"), "$2=prompt();");
+		re(temp,RegExp(/cin(.*)\+(.*);/, "g"), "$2=prompt(\"$2=\");");
 		re(temp,RegExp("cin","g"),"");
 	} else {
 		re(temp,RegExp(/std::cout[ ]\+[ ](.*)/,"g"),"textp.innerHTML = $1");
@@ -79,12 +82,14 @@ function c() {
 	re(temp,RegExp(/\*\//,"g"),"");
 	if (temp.innerHTML.search("function main() {") != -1) {temp.innerHTML = temp.innerHTML + "main();";}
 	re(temp,/(\w*)#include(.*)<(.*)>/g,"// #include  <$3>");
+	if (temp.innerHTML.search("main()")) {temp.innerHTML = temp.innerHTML + "main();";}
 	console.log(temp.innerHTML);
 	re(temp,/\</g,"&lt;");
 	re(temp,/\>/g,"&gt;");
 	re(temp,/[	]/g,"&emsp;");
 	re(temp,/[\n]/g,"<br>");
 	document.body.innerHTML = temp.innerHTML + document.body.innerHTML;
+	document.body.innerHTML = "<p id=\"textp\"></p>" + document.body.innerHTML
 	document.onkeydown = function(e){
 		var e = e || window.event,
 			t = e.target || e.srcElement;
