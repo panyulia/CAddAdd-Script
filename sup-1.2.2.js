@@ -2,7 +2,11 @@ var $=function(text) {
 	if (text.slice(0,1) == "#") {
 		return document.getElementById(text.slice(1,text.length));
 	} else if (text.slice(0,1) == ".") {
-		return document.getElementsByClassName(text.slice(1,text.length));
+		if (document.getElementsByClassName(text.slice(1,text.length)).length == 1) {
+			return document.getElementsByClassName(text.slice(1,text.length))[0];
+		} else {
+			return document.getElementsByClassName(text.slice(1,text.length));
+		}
 	} else {
 		if (document.getElementsByTagName(text).length == 1) {
 			return document.getElementsByTagName(text)[0];
