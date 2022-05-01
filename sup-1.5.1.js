@@ -31,8 +31,7 @@ var error=function(text){console.error(text);}
 for (var i=0;i <= $("*").length-1;i++) {
 	$("*")[i].html = function(text) {
 		if (text != undefined) {
-			this.innerHTML = text;
-			return this.innerHTML;
+			return this.innerHTML = text;
 		} else {
 			return this.innerHTML;
 		}
@@ -396,6 +395,13 @@ for (var i=0;i <= $("*").length-1;i++) {
 	}
 	$("*")[i].wheel = function(f) {
 		this.onwheel=f;
+	}
+	$("*")[i].val = function(text) {
+		if (text != undefined) {
+			return this.value = text;
+		} else {
+			return this.value;
+		}
 	}
 //
 //
