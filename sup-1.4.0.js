@@ -1,9 +1,12 @@
 try {
 //
 document.getElementsByTagName("body")[0].innerHTML;
+var documentElement = document.documentElement;
 var $=function(text) {
 	if (text == document) {
 		return document.body;
+	} else if (text == document.documentElement) {
+		return document.documentElement;
 	} else if (text.slice(0,1) == "#") {
 		return document.getElementById(text.slice(1,text.length));
 	} else if (text.slice(0,1) == ".") {
@@ -31,11 +34,14 @@ for (var i=0;i <= $("*").length-1;i++) {
 			this.innerHTML = text;
 			return this.innerHTML;
 		} else {
-			return this;
+			return this.innerHTML;
 		}
 	}
 	$("*")[i].get = function(text) {
-		return this.innerHTML;
+		return this;
+	}
+	$("*")[i].click = function(f,) {
+		this.onclick=f;
 	}
 }
 var sup={
