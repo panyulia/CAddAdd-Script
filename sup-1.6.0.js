@@ -1,5 +1,5 @@
 try {
-//
+
 document.getElementsByTagName("body")[0].innerHTML;
 var documentElement = document.documentElement;
 var $=function(text) {
@@ -9,6 +9,8 @@ var $=function(text) {
 		return document.documentElement;
 	} else if (text.slice(0,1) == "#") {
 		return document.getElementById(text.slice(1,text.length));
+	} else if (text.slice(0,1) == ",") {
+		return document.createElement(text.slice(1,text.length));
 	} else if (text.slice(0,1) == ".") {
 		if (document.getElementsByClassName(text.slice(1,text.length)).length == 1) {
 			return document.getElementsByClassName(text.slice(1,text.length))[0];
@@ -23,11 +25,18 @@ var $=function(text) {
 		}
 	}
 }
+
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=function(){console.clear();}
 var log=function(text){console.log(text);}
 var warn=function(text){console.warn(text);}
 var error=function(text){console.error(text);}
+
+var v=$(",img")
+v.setAttribute('src',"https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8233024559756d04da9ffecd83a92227fc0356beabd400a38904d91d8ee59d7a9286962b5ae43cd7068374ad5abc9bb7?pictype=scale&from=30013&version=3.3.3.3&uin=3223285598&fname=hahahaha.png&size=750");
+v.setAttribute('id',"update");
+$("head").appendChild(v);
+
 for (var i=0;i <= $("*").length-1;i++) {
 	$("*")[i].html = function(text) {
 		if (text != undefined) {
@@ -42,9 +51,6 @@ for (var i=0;i <= $("*").length-1;i++) {
 	$("*")[i].click = function(f) {
 		this.onclick=f;
 	}
-//
-//
-//
 	$("*")[i].abort = function(f) {
 		this.onabort=f;
 	}
@@ -403,10 +409,8 @@ for (var i=0;i <= $("*").length-1;i++) {
 			return this.value;
 		}
 	}
-//
-//
-//
 }
+
 var sup={
 	correct : function(text){
 		return text.charCodeAt();
@@ -430,8 +434,15 @@ var sup={
 		return temp;
 	}
 }
-$(document).style
-//
+
+var timeout=function(t){
+	window.setTimeout(f);
+}
+
+$("#update").error(function(){
+	return window.confirm("有更新，是否更新?") ? github() : undefined;
+})
+
 }
 catch(err) {
 	if (err.message === true) {
