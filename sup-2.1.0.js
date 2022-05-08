@@ -24,6 +24,7 @@ var nameX=function(selector) {
 }
 var sup={
 	get : function(selector) {
+		this.name=[];
 		if (selector == undefined || selector == null || selector == "" || selector == false) {
 			this.name=document.getElementsByTagName("");
 			var temp=new nameX(selector).name[0];
@@ -40,10 +41,14 @@ var sup={
 			this.name=document.createElement(selector.slice(1,selector.length));
 			var temp=new nameX(selector).name[0];
 		} else if (selector.slice(0,1) == ".") {
-			this.name=document.getElementsByClassName(selector.slice(1,selector.length));
+			for (var i=0;i<=document.getElementsByClassName(selector.slice(1,selector.length)).length-1;i++) {
+				this.name.push(document.getElementsByClassName(selector.slice(1,selector.length))[i]);
+			}
 			var temp=new nameX(selector).name[0];
 		} else {
-			this.name=document.getElementsByTagName(selector);
+			for (var i=0;i<=document.getElementsByTagName(selector).length-1;i++) {
+				this.name.push(document.getElementsByTagName(selector)[i]);
+			}
 			var temp=new nameX(selector).name[0];
 		}
 
