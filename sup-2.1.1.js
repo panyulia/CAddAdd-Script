@@ -166,6 +166,7 @@ var sup={
 		this.webkittransitionend=function(f) {temp.onwebkittransitionend=f;}
 		this.wheel=function(f) {temp.onwheel=f;}
 		this.ready=function(f) {temp.onload=f;}
+		this.get=function() {return new nameX(selector).name;}
 	}
 }
 var $=function(selector) {return new sup.get(selector);}
