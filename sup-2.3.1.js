@@ -196,7 +196,7 @@ var sup={
 			get : function() {return te.name;},
 			css : function(name,value) {for (var i=0;i<te.name.length;++i) {te.name[i].style.setProperty(name,value)}},
 			each : function( obj, fl ) {
-				if (!callback) {
+				if (!fl) {
 					for (var i=0;i<te.arr.length;++i) {
 						obj();
 					}
