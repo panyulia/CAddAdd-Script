@@ -192,7 +192,7 @@ var sup={
 			webkitfullscreenerror : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkitfullscreenerror=f;}},
 			webkittransitionend : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkittransitionend=f;}},
 			wheel : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwheel=f;}},
-			ready : function(f) {for (var i=0;i<te.name.length;++i) {window.setTimeout(function(){te.name[i].onload=f;},0)}},
+			ready : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onload=f;te.name[i].onload()}},
 			get : function() {return te.name;},
 			css : function(name,value) {for (var i=0;i<te.name.length;++i) {te.name[i].style.setProperty(name,value)}},
 			each : function( obj, fl ) {
@@ -207,7 +207,7 @@ var sup={
 					}
 				}
 			},
-			vesion : "2.3.3"
+			vesion : "2.3.4"
 		}
 	},
 	each: function( obj, fl ) {
