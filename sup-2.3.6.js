@@ -25,12 +25,9 @@ var xhr = createXHR();
 
 
 var nameX=function(selector) {
-	if (selector == undefined || selector == null || selector == "" || selector == false) {
-		this.name=document.getElementsByTagName("");
-	} else if (selector == document) {
-		this.name=document.body;
-	} else if (selector == document.documentElement) {
-		this.name=document.documentElement;
+	this.name=[];
+	if (selector == undefined || selector == null || selector == "" || selector == false) {} else if (selector == document) {
+		this.name=document.getElementsByTagName("body");
 	} else if (selector.slice(0,1) == "#") {
 		this.name=document.getElementById(selector.slice(1,selector.length));
 	} else if (selector.slice(0,1) == ",") {
@@ -46,10 +43,7 @@ var sup={
 		this.name=[];
 		this.arr=[];
 		te=this;
-		if (selector == undefined || selector == null || selector == "" || selector == false) {
-			this.name=document.getElementsByTagName("");
-			var temp=new nameX(selector).name;
-		} else if ((typeof selector == 'function') == true) {
+		if (selector == undefined || selector == null || selector == "" || selector == false) {} else if ((typeof selector == 'function') == true) {
 			window.setTimeout(function(){
 				window.onload=selector;
 				return selector();
@@ -193,26 +187,27 @@ var sup={
 			webkittransitionend : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkittransitionend=f;}},
 			wheel : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwheel=f;}},
 			ready : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onload=f;te.name[i].onload()}},
+			text : function(text) {
+				
+			},
 			get : function() {return te.name;},
 			css : function(name,value) {for (var i=0;i<te.name.length;++i) {te.name[i].style.setProperty(name,value)}},
-			each : function( obj, fl ) {
-				var i=0;
+			each : function( obj, fl) {
 				if (!fl) {
-					for (;i<te.arr.length;++i) {
+					for (var i=0;i<te.arr.length;++i) {
 						obj();
 					}
 				} else {
-					for (;i<fl;++i) {
+					for (var i=0;i<fl;++i) {
 						obj();
 					}
 				}
 			},
-			vesion : "2.3.4"
+			vesion : "2.3.6"
 		}
 	},
 	each: function( obj, fl ) {
-		var i=0;
-		for (;i<fl;++i) {
+		for (var i=0;i<fl;++i) {
 			obj();
 		}
 	}
