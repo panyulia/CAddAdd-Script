@@ -196,21 +196,23 @@ var sup={
 			get : function() {return te.name;},
 			css : function(name,value) {for (var i=0;i<te.name.length;++i) {te.name[i].style.setProperty(name,value)}},
 			each : function( obj, fl ) {
+				var i=0;
 				if (!fl) {
-					for (var i=0;i<te.arr.length;++i) {
+					for (;i<te.arr.length;++i) {
 						obj();
 					}
 				} else {
-					for (var i=0;i<fl;++i) {
+					for (;i<fl;++i) {
 						obj();
 					}
 				}
 			},
-			vesion : "2.3.0"
+			vesion : "2.3.2"
 		}
 	},
 	each: function( obj, fl ) {
-		for (var i=0;i<fl;++i) {
+		var i=0;
+		for (;i<fl;++i) {
 			obj();
 		}
 	}
