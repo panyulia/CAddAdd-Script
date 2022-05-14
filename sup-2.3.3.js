@@ -1,8 +1,8 @@
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=function(){console.clear();}
-var log=function(text,date){if (!date) {console.log(text,date);} else {console.log(text);}}
-var warn=function(text,date){if (!date) {console.warn(text,date);} else {console.warn(text);}}
-var error=function(text,date){if (!date) {console.error(text,date);} else {console.error(text);}}
+var log=function(text,date){if (!date) {console.log(text);} else {console.log(text,date);}}
+var warn=function(text,date){if (!date) {console.warn(text);} else {console.warn(text,date);}}
+var error=function(text,date){if (!date) {console.error(text);} else {console.error(text,date);}}
 function createXHR () {
     var XHR = [
         function () { return new XMLHttpRequest () },
