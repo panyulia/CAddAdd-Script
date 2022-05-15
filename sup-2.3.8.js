@@ -216,17 +216,51 @@ var sup={
 					}
 				}
 			},
-			vesion : "2.3.7"
+			vesion : "2.3.8"
 		}
 	},
-	each: function( obj, fl ) {
+	each : function( obj, fl ) {
 		for (var i=0;i<fl;++i) {
 			obj();
+		}
+	},
+	ajax : function(options) {
+		if ((typeof options == 'object') == true) {
+			/*if (options.url) {o.url=options.url;} else {o.url="";}
+			if (options.type) {o.type=options.type;} else {o.type="GET";}
+			if (options.async) {o.async=options.async;} else {o.async=true;}
+			if (options.username) {o.username=options.username}
+			if (options.password) {o.password=options.password}*/
+			if (options.type) {
+				if (options.url) {
+					if (options.async) {
+						if (options.username) {
+							if (options.password) {
+								xhr.open(options.type,options.url,options.async,options.username,options.password);
+								xhr.send(null);
+							}
+						} else {
+							xhr.open(options.type,options.url,options.async);
+							xhr.send(null);
+						}
+					} else {
+						xhr.open(options.type,options.url,true);
+						xhr.send(null);
+					}
+				}
+			} else if (options.url) {
+				xhr.open("GET",options.url,true);
+				xhr.send(null);
+			}
+			if ((typeof options.xhr == 'function') == true) {
+				options.xhr();
+			}
 		}
 	}
 }
 var $=function(selector) {return new sup.get(selector);}
 $.each=function(obj,fl) {return sup.each(obj,fl);}
+$.ajax=function(options) {return new sup.ajax(options);}
 log(`%c
 										    		 #MMMMMMMMMMMMM
 									    			#MMMMMMMMMMMMMM
