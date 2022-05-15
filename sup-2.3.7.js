@@ -74,17 +74,23 @@ var sup={
 		}
 		this.__proto__={
 			html : function(text) {
-				if (text == undefined || text == null || text == "" || text == false) {
-					return temp.innerHTML;
-				} else {
-					return temp.innerHTML=text;
+				for (var i=0;i<te.name.length;++i) {
+					if (!text) {
+						log(i+": "+te.name[i].innerHTML);
+					} else {
+						te.name[i].innerHTML=text;
+						log(i+": "+te.name[i].innerHTML);
+					}
 				}
 			},
 			val : function(text) {
-				if (text == undefined || text == null || text == "" || text == false) {
-					return temp.value;
-				} else {
-					return temp.value=text;
+				for (var i=0;i<te.name.length;++i) {
+					if (!text) {
+						log(i+": "+te.name[i].value);
+					} else {
+						te.name[i].value=text;
+						log(i+": "+te.name[i].value);
+					}
 				}
 			},
 			animationend : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onanimationend=f;}},
@@ -186,9 +192,16 @@ var sup={
 			webkitfullscreenerror : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkitfullscreenerror=f;}},
 			webkittransitionend : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkittransitionend=f;}},
 			wheel : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwheel=f;}},
-			ready : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onload=f;te.name[i].onload()}},
+			ready : function(f) {for (var i=0;i<te.name.length;++i) {window.onload=f;window.onload()}},
 			text : function(text) {
-				
+				for (var i=0;i<te.name.length;++i) {
+					if (!text) {
+						log(i+": "+te.name[i].innerText);
+					} else {
+						te.name[i].innerText=text;
+						log(i+": "+te.name[i].innerText);
+					}
+				}
 			},
 			get : function() {return te.name;},
 			css : function(name,value) {for (var i=0;i<te.name.length;++i) {te.name[i].style.setProperty(name,value)}},
@@ -203,7 +216,7 @@ var sup={
 					}
 				}
 			},
-			vesion : "2.3.6"
+			vesion : "2.3.7"
 		}
 	},
 	each: function( obj, fl ) {
