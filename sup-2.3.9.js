@@ -46,7 +46,7 @@ var sup={
 		if (selector == undefined || selector == null || selector == "" || selector == false) {} else if ((typeof selector == 'function') == true) {
 			window.setTimeout(function(){
 				window.onload=selector;
-				return selector();
+				return;
 			},0)
 		} else if (selector == document) {
 			this.name=document.getElementsByTagName("body");
@@ -55,7 +55,7 @@ var sup={
 			this.name[0]=document.getElementById(selector.slice(1,selector.length));
 			var temp=new nameX(selector).name;
 		} else if (selector.slice(0,1) == ",") {
-			this.name=document.createElement(selector.slice(1,selector.length));
+			return document.createElement(selector.slice(1,selector.length));
 			var temp=new nameX(selector).name[0];
 		} else if (selector.slice(0,1) == ".") {
 			for (var i=0;i<=document.getElementsByClassName(selector.slice(1,selector.length)).length-1;i++) {
@@ -192,7 +192,7 @@ var sup={
 			webkitfullscreenerror : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkitfullscreenerror=f;}},
 			webkittransitionend : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwebkittransitionend=f;}},
 			wheel : function(f) {for (var i=0;i<te.name.length;++i) {te.name[i].onwheel=f;}},
-			ready : function(f) {for (var i=0;i<te.name.length;++i) {window.onload=f;window.onload()}},
+			ready : function(f) {for (var i=0;i<te.name.length;++i) {window.onload=f;}},
 			text : function(text) {
 				for (var i=0;i<te.name.length;++i) {
 					if (!text) {
@@ -216,7 +216,9 @@ var sup={
 					}
 				}
 			},
-			vesion : "2.3.8"
+			addEvent : function(name,f) {for (var i=0;i<te.name.length;++i) {te.name[i].addEventListener(name,f);}},
+			removeEvent : function(name,fname) {for (var i=0;i<te.name.length;++i) {te.name[i].removeEventListener(name,fname);}},
+			vesion : "2.3.9"
 		}
 	},
 	each : function( obj, fl ) {
@@ -256,11 +258,15 @@ var sup={
 				options.xhr();
 			}
 		}
-	}
+	},
+	addEvent : function(name,f) {window.addEventListener(name,f);},
+	removeEvent : function(name,fname) {window.removeEventListener(name,fname);}
 }
 var $=function(selector) {return new sup.get(selector);}
-$.each=function(obj,fl) {return sup.each(obj,fl);}
+$.each=function(obj,fl) {return new sup.each(obj,fl);}
 $.ajax=function(options) {return new sup.ajax(options);}
+$.addEvent=function(name,f) {return new sup.addEvent(name,f);}
+$.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
 log(`%c
 										    		 #MMMMMMMMMMMMM
 									    			#MMMMMMMMMMMMMM
