@@ -73,26 +73,30 @@ if ((typeof selector=="function")==true) {
 		for (var i=0;i<name.length;++i) {
 			this[i]=name[i];
 		}
-		name.__proto__={
+		window.tem={
 			html : function(text) {
+				var sc=""
 				for (var i=0;i<name.length;++i) {
 					if (!text) {
-						log(i+": "+name[i].innerHTML);
+						sc=name[0].innerHTML;
 					} else {
 						name[i].innerHTML=text;
-						log(i+": "+name[i].innerHTML);
+						sc=name[0].innerHTML;
 					}
 				}
+				return sc;
 			},
 			val : function(text) {
+				var sc;
 				for (var i=0;i<name.length;++i) {
 					if (!text) {
-						log(i+": "+name[i].value);
+						sc=name[0].innerHTML;
 					} else {
 						name[i].value=text;
-						log(i+": "+name[i].value);
+						sc=name[0].innerHTML;
 					}
 				}
+				return sc;
 			},
 			animationend : function(f) {for (var i=0;i<name.length;++i) {name[i].onanimationend=f;}},
 			animationiteration : function(f) {for (var i=0;i<name.length;++i) {name[i].onanimationiteration=f;}},
@@ -221,11 +225,17 @@ if ((typeof selector=="function")==true) {
 			removeEvent : function(name,fname) {for (var i=0;i<name.length;++i) {name[i].removeEventListener(name,fname);}},
 			version : "2.4.0"
 		}
+		name.__proto__=tem;
 		return name;
 } else if (!!selector) {
 	name=[selector];
+	name.__proto__=tem;
 	return name;
+} else {
+	this.__proto__=tem;
+	return this;
 }
+window.tem=undefined;
 	},
 	each : function( obj, fl ) {
 		for (var i=0;i<fl;++i) {
