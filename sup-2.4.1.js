@@ -73,7 +73,7 @@ if ((typeof selector=="function")==true) {
 		for (var i=0;i<name.length;++i) {
 			this[i]=name[i];
 		}
-		window.tem={
+		sup.fn={
 			html : function(text) {
 				var sc=""
 				for (var i=0;i<name.length;++i) {
@@ -221,21 +221,35 @@ if ((typeof selector=="function")==true) {
 				}
 				return name;
 			},
-			addEvent : function(name,f) {for (var i=0;i<name.length;++i) {name[i].addEventListener(name,f);}},
-			removeEvent : function(name,fname) {for (var i=0;i<name.length;++i) {name[i].removeEventListener(name,fname);}},
-			version : "2.4.0"
+			addEvent : function(names,f) {for (var i=0;i<name.length;++i) {name[i].addEventListener(names,f);}},
+			removeEvent : function(names,fname) {for (var i=0;i<name.length;++i) {name[i].removeEventListener(names,fname);}},
+			css : function (names,value) {
+				if (!!names&&!!value&&names.constructor==String&&value.constructor==String) {
+					for (var i=0;i<name.length;++i) {
+						name[i].style.setProperty(names,value);
+					}
+					return Array(names,value);
+				} else if (!!names&&!value&&names.constructor==Object) {
+					for (var i=0;i<name.length;++i) {
+						for (var ii in names) {
+							name[i].style.setProperty(ii,names[ii]);
+						}
+					}
+					return names;
+				}
+			},
+			version : "2.4.1"
 		}
-		name.__proto__=tem;
+		name.__proto__=sup.fn;
 		return name;
 } else if (!!selector) {
 	name=[selector];
-	name.__proto__=tem;
+	name.__proto__=sup.fn;
 	return name;
 } else {
-	this.__proto__=tem;
+	this.__proto__=sup.fn;
 	return this;
 }
-window.tem=undefined;
 	},
 	each : function( obj, fl ) {
 		for (var i=0;i<fl;++i) {
