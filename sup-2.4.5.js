@@ -163,6 +163,10 @@ var sup={
 		play : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].play();}},
 		onplay : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onplay=f;}},
 		onpause : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onpause=f;}},
+		onblur : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onblur=f;}},
+		blur : function(eh) {for (let i=0;i<sup.log.length;++i) {sup.log[i].blur(eh);}},
+		onfocus : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onfocus=f;}},
+		focus : function(eh) {for (let i=0;i<sup.log.length;++i) {sup.log[i].focus(eh);}},
 		text : function(text) {
 			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
@@ -240,7 +244,7 @@ sup.fn.get=function(selector) {
 		for (var i=0;i<sup.log.length;++i) {
 			this[i]=sup.log[i];
 		}
-		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","blur","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","focus","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<sup.log.length;++i) {eval('sup.log[i].on'+ii+'=f;')}}}}
+		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<sup.log.length;++i) {eval('sup.log[i].on'+ii+'=f;')}}}}
 		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
 		ls();
