@@ -1,4 +1,12 @@
 "use strict";
+let ls=function(){
+	sup.log={};
+	sup.logs=function(){};
+	sup.logs.prototype=[];
+	sup.logs.prototype.constructor=function(){};
+	sup.log.__proto__=sup.logs.prototype;
+	sup.log.push();
+}
 /*
 https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8233024559756d04da9ffecd83a92227fc0356beabd400a38904d91d8ee59d7a9286962b5ae43cd7068374ad5abc9bb7?pictype=scale&from=30113&version=3.3.3.3&uin=3223285598&fname=hahahaha.png&size=750
 这是一个javascript压缩代码
@@ -32,18 +40,17 @@ var nameX=function(selector) {
 	this.name=[];
 	if (selector == undefined || selector == null || selector == "" || selector == false) {} else if (selector == document) {
 		this.name=document.getElementsByTagName("body");
-	} else if (selector.slice(0,1) == "#") {
+	} else if (selector[0] == "#") {
 		this.name=document.getElementById(selector.slice(1,selector.length));
-	} else if (selector.slice(0,1) == ",") {
+	} else if (selector[0] == ",") {
 		this.name=document.createElement(selector.slice(1,selector.length));
-	} else if (selector.slice(0,1) == ".") {
+	} else if (selector[0] == ".") {
 		this.name=document.getElementsByClassName(selector.slice(1,selector.length));
 	} else {
 		this.name=document.getElementsByTagName(selector);
 	}
 }
 var sup={
-	log:new Array(0),
 	fn:{},
 	for : function( obj, fl ) {
 		/*
@@ -68,11 +75,6 @@ var sup={
 	ajax : function(options) {
 		let xhr=new createXHR();
 		if ((typeof options == 'object') == true) {
-			/*if (options.url) {o.url=options.url;} else {o.url="";}
-			if (options.type) {o.type=options.type;} else {o.type="GET";}
-			if (options.async) {o.async=options.async;} else {o.async=true;}
-			if (options.username) {o.username=options.username}
-			if (options.password) {o.password=options.password}*/
 			if (options.type) {
 				if (options.url) {
 					if (options.async) {
@@ -137,7 +139,7 @@ var sup={
 			}
 			return sc;
 		},
-		ready : function(f) {for (var i=0;i<sup.log.length;++i) {window.onload=f;}},
+		ready : function(f) {for (var i=0;i<sup.log.length;++i) {f();}},
 		append : function(ae) {for (let i=0;i<sup.log.length;++i) {sup.log[i].appendChild(ae);}},
 		pause : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].pause();}},
 		play : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].play();}},
@@ -164,6 +166,7 @@ var sup={
 				}
 			}
 			return sup.log;
+			ls();
 		},
 		addEvent : function(names,f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].addEventListener(names,f);}},
 		removeEvent : function(names,fname) {for (let i=0;i<sup.log.length;++i) {sup.log[i].removeEventListener(names,fname);}},
@@ -183,32 +186,33 @@ var sup={
 			}
 		},
 		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
-		constructor: function(selector) {this.prototype=sup.fn;},
-		version : "2.4.3",
-		get:function(selector){}
+		version : "2.4.4"
 	}
 }
 sup.fn.get=function(selector) {
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
-			let onload=selector;
-			onload();
+			window.onload=selector;
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
-		sup.log=new Array();
+		/*
+		log:{},
+		logs:function(){},
+		*/
+		ls();
 		if (!selector) {
 			return this;
-		} else if (selector.slice(0,1) == "#") {
-			sup.log[0]=document.getElementById(selector.slice(1,selector.length));
-			sup.log=new nameX(selector).name;
-		} else if (selector.slice(0,1) == ",") {
+		} else if (selector[0] == "#") {
+			sup.log.push(document.getElementById(selector.slice(1,selector.length)));
+		} else if (selector[0] == ",") {
 			return document.createElement(selector.slice(1,selector.length));
-			sup.log=new nameX(selector).name[0];
-		} else if (selector.slice(0,1) == ".") {
+		} else if (selector[0] == ".") {
+			ls();
 			for (var i=0;i<=document.getElementsByClassName(selector.slice(1,selector.length)).length-1;i++) {
 				sup.log.push(document.getElementsByClassName(selector.slice(1,selector.length))[i]);
 			}
 		} else {
+			ls();
 			for (var i=0;i<=document.getElementsByTagName(selector).length-1;i++) {
 				sup.log.push(document.getElementsByTagName(selector)[i]);
 			}
@@ -217,15 +221,37 @@ sup.fn.get=function(selector) {
 			this[i]=sup.log[i];
 		}
 		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","blur","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","focus","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<sup.log.length;++i) {eval('sup.log[i].on'+ii+'=f;')}}}}
-		sup.log.__proto__=sup.fn;
+		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
+		ls();
 	} else if (!!selector) {
 		sup.log=[selector];
-		sup.log.__proto__=sup.fn;
+		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
+		ls();
 	} else {
+		this.__proto__=sup.fn;
 		return this;
+		ls();
 	}
+}
+sup.fn.write=function(obj){
+if(!!obj&&obj.constructor==Object){
+	for(let i in obj){
+		sup.fn[i]=obj[i];
+	}
+	return sup.fn;
+}
+return sup.fn;
+};
+sup.write=function(obj){
+if(!!obj&&obj.constructor==Object){
+	for(let i in obj){
+		sup[i]=obj[i];
+	}
+	return sup;
+}
+return sup;
 }
 var $=function(selector) {return new sup.fn.get(selector);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
