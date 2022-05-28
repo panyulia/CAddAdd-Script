@@ -13,9 +13,6 @@ https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8233024559756d04da9ffe
 */
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=function(){console.clear();}
-var log=function(text,date){if (!date) {console.log(text);} else {console.log(text,date);}}
-var warn=function(text,date){if (!date) {console.warn(text);} else {console.warn(text,date);}}
-var error=function(text,date){if (!date) {console.error(text);} else {console.error(text,date);}}
 function createXHR () {
     var XHR = [
         function () { return new XMLHttpRequest () },
@@ -210,7 +207,7 @@ var sup={
 			}
 		},
 		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
-		version : "2.4.5"
+		version : "2.4.6"
 	}
 }
 sup.fn.get=function(selector) {
@@ -219,10 +216,6 @@ sup.fn.get=function(selector) {
 			window.onload=selector;
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
-		/*
-		log:{},
-		logs:function(){},
-		*/
 		ls();
 		if (!selector) {
 			return this;
@@ -283,15 +276,20 @@ $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
 $.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
 var ape=function(name,move,o){let yss=document.createElement(name);for (let i in o) {yss[i]=o[i]};document.getElementsByTagName(move)[0].appendChild(yss);}
-log(`%c
+console.log(`%c
 #################    ####	   ####    ################
 #################    ####	   ####    ################
 ####			     ####	   ####    ####        ####
-####			     ####	   ####    ####        ####    `+new sup.fn.get("html").version+`
+####			     ####	   ####    ####        ####    %c SUP %c ${new sup.fn.get("html").version} %c
 #################    ####	   ####    ################
 #################    ####	   ####    ################
 			 ####    ####	   ####    ####
 			 ####    ####	   ####    ####
 #################    ##############    ####
 #################    ##############    ####
-	`,"color:red");
+`,
+"color:red",
+"color:black;background-color:white;border-radius:100px 0 0 100px",
+"color:white;background-color:red;border-radius:0 100px 100px 0",
+"color:red"
+);
