@@ -1,7 +1,7 @@
 "use strict";
 let ls=function(){
 	sup.log={};
-	sup.logs=function(){};
+	sup.logs=function Array() {};
 	sup.logs.prototype=[];
 	sup.logs.prototype.constructor=function(){};
 	sup.log.__proto__=sup.logs.prototype;
