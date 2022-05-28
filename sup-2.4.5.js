@@ -1,7 +1,7 @@
 "use strict";
 let ls=function(){
 	sup.log={};
-	sup.logs=function Array() {};
+	sup.logs=function(){};
 	sup.logs.prototype=[];
 	sup.logs.prototype.constructor=function(){};
 	sup.log.__proto__=sup.logs.prototype;
@@ -70,6 +70,24 @@ var sup={
 			for (let i in obj) {
 				fl(i);
 			}
+		} else if (obj.__proto__.__proto__.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
+			for (let i of obj) {
+				fl(i);
+			}
+		} else if (obj.__proto__.__proto__.constructor==Object&&fl.constructor==Function&&!!obj&&!!fl) {
+			for (let i in obj) {
+				fl(i);
+			}
+		} else {
+			if (!!obj.__proto__.constructor&&!!obj.__proto__.__proto__.constructor) {
+				return obj.__proto__.constructor+" or "+obj.__proto__.__proto__.constructor;
+			} else if (!!obj.__proto__.__proto__.constructor&&!obj.__proto__.constructor) {
+				return obj.__proto__.__proto__.constructor;
+			} else if (!!obj.__proto__.constructor) {
+				return obj.__proto__.constructor;
+			} else {
+				return "Error: your obj undefined";
+			}
 		}
 	},
 	ajax : function(options) {
@@ -116,7 +134,7 @@ var sup={
 	removeEvent : function(name,fname) {window.removeEventListener(name,fname);},
 	fn:{
 		html : function(text) {
-			var sc=""
+			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
 				if (!text) {
 					sc=sup.log[0].innerHTML;
@@ -128,13 +146,13 @@ var sup={
 			return sc;
 		},
 		val : function(text) {
-			var sc;
+			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
 				if (!text) {
-					sc=sup.log[0].innerHTML;
+					sc=sup.log[0].value;
 				} else {
 					sup.log[i].value=text;
-					sc=sup.log[0].innerHTML;
+					sc=sup.log[0].value;
 				}
 			}
 			return sc;
@@ -146,14 +164,16 @@ var sup={
 		onplay : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onplay=f;}},
 		onpause : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onpause=f;}},
 		text : function(text) {
+			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
 				if (!text) {
-					log(i+": "+sup.log[i].innerText);
+					sc=sup.log[0].innerText;
 				} else {
 					sup.log[i].innerText=text;
-					log(i+": "+sup.log[i].innerText);
+					sc=sup.log[0].innerText;
 				}
 			}
+			return sc;
 		},
 		for : function( obj, fl) {
 			if (!fl) {
@@ -186,7 +206,7 @@ var sup={
 			}
 		},
 		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
-		version : "2.4.4"
+		version : "2.4.5"
 	}
 }
 sup.fn.get=function(selector) {
