@@ -289,7 +289,7 @@ console.log(`%c
 #################    ##############    ####
 `,
 "color:red",
-"color:black;background-color:white;border-radius:100px 0 0 100px",
-"color:white;background-color:red;border-radius:0 100px 100px 0",
+"color:black;background-color:#3a3;font-size:13px;border-radius:100px 0 0 100px",
+"color:white;background-color:red;font-size:13px;border-radius:0 100px 100px 0",
 "color:red"
 );
