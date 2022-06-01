@@ -7,12 +7,12 @@ let ls=function(){
 	sup.log.__proto__=sup.logs.prototype;
 	sup.log.push();
 }
-/*
-https://picabstract-preview-ftn.weiyun.com/ftn_pic_abs_v3/8233024559756d04da9ffecd83a92227fc0356beabd400a38904d91d8ee59d7a9286962b5ae43cd7068374ad5abc9bb7?pictype=scale&from=30113&version=3.3.3.3&uin=3223285598&fname=hahahaha.png&size=750
-这是一个javascript压缩代码
-*/
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
-var clear=function(){console.clear();}
+var clear=console.clear;
+var log=console.log;
+var error=console.error;
+var warn=console.warn;
+var ifair=function(i){if(i==undefined||i==null){return false;}else{return true;}}
 function createXHR () {
     var XHR = [
         function () { return new XMLHttpRequest () },
@@ -54,6 +54,23 @@ var sup={
 		for the of => Array is []
 		for the in => Object is {}
 		*/
+		try{
+		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
+			for (let i=0;i<fl;++i) {
+				obj();
+			}
+			return obj;
+		} else if (obj.constructor==Array||obj.__proto__.__proto__.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
+			for (let i of obj) {
+				fl(i);
+			}
+		} else if (obj.constructor==Object||obj.__proto__.__proto__.constructor==Object&&fl.constructor==Function&&!!obj&&!!fl) {
+			for (let i in obj) {
+				fl(i);
+			}
+		} else {return obj;}
+		}
+		catch(err){
 		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
 			for (let i=0;i<fl;++i) {
 				obj();
@@ -67,24 +84,7 @@ var sup={
 			for (let i in obj) {
 				fl(i);
 			}
-		} else if (obj.__proto__.__proto__.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i of obj) {
-				fl(i);
-			}
-		} else if (obj.__proto__.__proto__.constructor==Object&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i in obj) {
-				fl(i);
-			}
-		} else {
-			if (!!obj.__proto__.constructor&&!!obj.__proto__.__proto__.constructor) {
-				return obj.__proto__.constructor+" or "+obj.__proto__.__proto__.constructor;
-			} else if (!!obj.__proto__.__proto__.constructor&&!obj.__proto__.constructor) {
-				return obj.__proto__.__proto__.constructor;
-			} else if (!!obj.__proto__.constructor) {
-				return obj.__proto__.constructor;
-			} else {
-				return "Error: your obj undefined";
-			}
+		} else {return obj;}
 		}
 	},
 	ajax : function(options) {
@@ -203,7 +203,24 @@ var sup={
 						sup.log[i].style.setProperty(ii,names[ii]);
 					}
 				}
-				return names;
+				return sup.log;
+			}
+		},
+		attr : function(names,value) {
+			if(ifair(names)==true&&ifair(value)==false&&(typeof names=='string')==true){
+				return sup.log[0].getAttribute(names);
+			}else if(ifair(names)&&ifair(value)&&(typeof names=='string')==true){
+				for(let i=0;i<sup.log.length;++i){
+					sup.log[i].setAttribute(names,value);
+				}
+				return sup.log;
+			}else if(ifair(names)&&(typeof names=='object')==true){
+				for(let i=0;i<sup.log.length;++i){
+					for(let ii in names){
+						sup.log[i].setAttribute(ii,names[ii]);
+					}
+				}
+				return sup.log;
 			}
 		},
 		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
@@ -240,16 +257,15 @@ sup.fn.get=function(selector) {
 		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<sup.log.length;++i) {eval('sup.log[i].on'+ii+'=f;')}}}}
 		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
-		ls();
 	} else if (!!selector) {
-		sup.log=[selector];
+		ls();
+		if(selector.constructor==Array||selector.__proto__.__proto__.constructor==Object){for(let i of values(selector)){sup.log.push(i);}}else{sup.log.push(selector);}
 		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
-		ls();
 	} else {
-		this.__proto__=sup.fn;
-		return this;
 		ls();
+		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
+		return sup.log;
 	}
 }
 sup.fn.write=function(obj){
@@ -276,7 +292,7 @@ $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
 $.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
 var ape=function(name,move,o){let yss=document.createElement(name);for (let i in o) {yss[i]=o[i]};document.getElementsByTagName(move)[0].appendChild(yss);}
-console.log(`%c
+log(`%c
 #################    ####	   ####    ################
 #################    ####	   ####    ################
 ####			     ####	   ####    ####        ####
@@ -289,7 +305,7 @@ console.log(`%c
 #################    ##############    ####
 `,
 "color:red",
-"color:black;background-color:#3a3;font-size:13px;border-radius:100px 0 0 100px",
-"color:white;background-color:red;font-size:13px;border-radius:0 100px 100px 0",
+"color:white;background-color:#3a3;border-radius:100px 0 0 100px",
+"color:white;background-color:red;border-radius:0 100px 100px 0",
 "color:red"
 );
