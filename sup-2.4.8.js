@@ -133,7 +133,7 @@ var sup={
 		html : function(text) {
 			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
-				if (!text) {
+				if (ifair(text)==false) {
 					sc=sup.log[0].innerHTML;
 				} else {
 					sup.log[i].innerHTML=text;
@@ -145,7 +145,7 @@ var sup={
 		val : function(text) {
 			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
-				if (!text) {
+				if (ifair(text)==false) {
 					sc=sup.log[0].value;
 				} else {
 					sup.log[i].value=text;
@@ -167,7 +167,7 @@ var sup={
 		text : function(text) {
 			var sc="";
 			for (var i=0;i<sup.log.length;++i) {
-				if (!text) {
+				if (ifair(text)==false) {
 					sc=sup.log[0].innerText;
 				} else {
 					sup.log[i].innerText=text;
@@ -224,13 +224,14 @@ var sup={
 			}
 		},
 		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
-		version : "2.4.6"
+		version : "2.4.8"
 	}
 }
 sup.fn.get=function(selector) {
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
 			window.onload=selector;
+			window.onload();
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
 		ls();
@@ -291,20 +292,11 @@ $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
 $.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
-var ape=function(name,move,o){let yss=document.createElement(name);for (let i in o) {yss[i]=o[i]};document.getElementsByTagName(move)[0].appendChild(yss);}
+var ape=function(name,move,o){let yss=document.createElement(name);for (let i in o) {yss[i]=o[i]};$(move)[0].appendChild(yss);}
 log(`%c
-#################    ####	   ####    ################
-#################    ####	   ####    ################
-####			     ####	   ####    ####        ####
-####			     ####	   ####    ####        ####    %c SUP %c ${new sup.fn.get("html").version} %c
-#################    ####	   ####    ################
-#################    ####	   ####    ################
-			 ####    ####	   ####    ####
-			 ####    ####	   ####    ####
-#################    ##############    ####
-#################    ##############    ####
+SUP%c SUP %c ${new sup.fn.get("html").version} %c
 `,
-"color:red",
+"color:red;font-size:15vw;text-shadow:0px 0px 3px white,0px 0px 5px black",
 "color:white;background-color:#3a3;border-radius:100px 0 0 100px",
 "color:white;background-color:red;border-radius:0 100px 100px 0",
 "color:red"
