@@ -48,6 +48,7 @@ var nameX=function(selector) {
 	}
 }
 var sup={
+	temp:{},
 	fn:{},
 	for : function( obj, fl ) {
 		/*
@@ -132,53 +133,53 @@ var sup={
 	fn:{
 		html : function(text) {
 			var sc="";
-			for (var i=0;i<sup.log.length;++i) {
+			for (var i=0;i<this.length;++i) {
 				if (ifair(text)==false) {
-					sc=sup.log[0].innerHTML;
+					sc=this[0].innerHTML;
 				} else {
-					sup.log[i].innerHTML=text;
-					sc=sup.log[0].innerHTML;
+					this[i].innerHTML=text;
+					sc=this[0].innerHTML;
 				}
 			}
 			return sc;
 		},
 		val : function(text) {
 			var sc="";
-			for (var i=0;i<sup.log.length;++i) {
+			for (var i=0;i<this.length;++i) {
 				if (ifair(text)==false) {
-					sc=sup.log[0].value;
+					sc=this[0].value;
 				} else {
-					sup.log[i].value=text;
-					sc=sup.log[0].value;
+					this[i].value=text;
+					sc=this[0].value;
 				}
 			}
 			return sc;
 		},
-		ready : function(f) {for (var i=0;i<sup.log.length;++i) {f();}},
-		append : function(ae) {for (let i=0;i<sup.log.length;++i) {sup.log[i].appendChild(ae);}},
-		pause : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].pause();}},
-		play : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].play();}},
-		onplay : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onplay=f;}},
-		onpause : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onpause=f;}},
-		onblur : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onblur=f;}},
-		blur : function(eh) {for (let i=0;i<sup.log.length;++i) {sup.log[i].blur(eh);}},
-		onfocus : function(f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].onfocus=f;}},
-		focus : function(eh) {for (let i=0;i<sup.log.length;++i) {sup.log[i].focus(eh);}},
+		ready : function(f) {for (var i=0;i<this.length;++i) {f();}},
+		append : function(ae) {for (let i=0;i<this.length;++i) {this[i].appendChild(ae);}},
+		pause : function(f) {for (let i=0;i<this.length;++i) {this[i].pause();}},
+		play : function(f) {for (let i=0;i<this.length;++i) {this[i].play();}},
+		onplay : function(f) {for (let i=0;i<this.length;++i) {this[i].onplay=f;}},
+		onpause : function(f) {for (let i=0;i<this.length;++i) {this[i].onpause=f;}},
+		onblur : function(f) {for (let i=0;i<this.length;++i) {this[i].onblur=f;}},
+		blur : function(eh) {for (let i=0;i<this.length;++i) {this[i].blur(eh);}},
+		onfocus : function(f) {for (let i=0;i<this.length;++i) {this[i].onfocus=f;}},
+		focus : function(eh) {for (let i=0;i<this.length;++i) {this[i].focus(eh);}},
 		text : function(text) {
 			var sc="";
-			for (var i=0;i<sup.log.length;++i) {
+			for (var i=0;i<this.length;++i) {
 				if (ifair(text)==false) {
-					sc=sup.log[0].innerText;
+					sc=this[0].innerText;
 				} else {
-					sup.log[i].innerText=text;
-					sc=sup.log[0].innerText;
+					this[i].innerText=text;
+					sc=this[0].innerText;
 				}
 			}
 			return sc;
 		},
 		for : function( obj, fl) {
 			if (!fl) {
-				for (var i=0;i<sup.log.length;++i) {
+				for (var i=0;i<this.length;++i) {
 					obj();
 				}
 			} else {
@@ -189,18 +190,18 @@ var sup={
 			return sup.log;
 			ls();
 		},
-		addEvent : function(names,f) {for (let i=0;i<sup.log.length;++i) {sup.log[i].addEventListener(names,f);}},
-		removeEvent : function(names,fname) {for (let i=0;i<sup.log.length;++i) {sup.log[i].removeEventListener(names,fname);}},
+		addEvent : function(names,f) {for (let i=0;i<this.length;++i) {this[i].addEventListener(names,f);}},
+		removeEvent : function(names,fname) {for (let i=0;i<this.length;++i) {this[i].removeEventListener(names,fname);}},
 		css : function (names,value) {
 			if (!!names&&!!value&&names.constructor==String&&value.constructor==String) {
-				for (var i=0;i<sup.log.length;++i) {
-					sup.log[i].style.setProperty(names,value);
+				for (var i=0;i<this.length;++i) {
+					this[i].style.setProperty(names,value);
 				}
 				return Array(names,value);
 			} else if (!!names&&!value&&names.constructor==Object) {
-				for (var i=0;i<sup.log.length;++i) {
+				for (var i=0;i<this.length;++i) {
 					for (var ii in names) {
-						sup.log[i].style.setProperty(ii,names[ii]);
+						this[i].style.setProperty(ii,names[ii]);
 					}
 				}
 				return sup.log;
@@ -208,30 +209,45 @@ var sup={
 		},
 		attr : function(names,value) {
 			if(ifair(names)==true&&ifair(value)==false&&(typeof names=='string')==true){
-				return sup.log[0].getAttribute(names);
+				return this[0].getAttribute(names);
 			}else if(ifair(names)&&ifair(value)&&(typeof names=='string')==true){
-				for(let i=0;i<sup.log.length;++i){
-					sup.log[i].setAttribute(names,value);
+				for(let i=0;i<this.length;++i){
+					this[i].setAttribute(names,value);
 				}
 				return sup.log;
 			}else if(ifair(names)&&(typeof names=='object')==true){
-				for(let i=0;i<sup.log.length;++i){
+				for(let i=0;i<this.length;++i){
 					for(let ii in names){
-						sup.log[i].setAttribute(ii,names[ii]);
+						this[i].setAttribute(ii,names[ii]);
 					}
 				}
 				return sup.log;
 			}
 		},
-		remove : function() {for (let i=0;i<sup.log.length;++i) {sup.log[i].remove()}},
-		version : "2.4.8"
+		remove : function() {for (let i=0;i<this.length;++i) {this[i].remove()}},
+		parent : function(selector) {
+			let temp=sup.log;
+			ls();
+			for(let i=0;i<temp.length;++i){
+				this[this.length-1]!=temp[i].parentNode?sup.log.push(temp[i].parentNode):undefined;
+			}
+			return sup.log.reverse();
+		},
+		gets : function() {
+			let r=values(this);
+			r.length=r.length-1;
+			return r;
+		},
+		version : "2.4.9"
 	}
 }
 sup.fn.get=function(selector) {
+	sup.temp.dg=undefined;
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
 			window.onload=selector;
 			window.onload();
+			sup.temp.dg='fun';
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
 		ls();
@@ -239,28 +255,33 @@ sup.fn.get=function(selector) {
 			return this;
 		} else if (selector[0] == "#") {
 			sup.log.push(document.getElementById(selector.slice(1,selector.length)));
+			sup.temp.dg='Id';
 		} else if (selector[0] == ",") {
+			sup.temp.dg='cE';
 			return document.createElement(selector.slice(1,selector.length));
 		} else if (selector[0] == ".") {
 			ls();
 			for (var i=0;i<=document.getElementsByClassName(selector.slice(1,selector.length)).length-1;i++) {
 				sup.log.push(document.getElementsByClassName(selector.slice(1,selector.length))[i]);
 			}
+			sup.temp.dg='ClassName';
 		} else {
 			ls();
 			for (var i=0;i<=document.getElementsByTagName(selector).length-1;i++) {
 				sup.log.push(document.getElementsByTagName(selector)[i]);
 			}
+			sup.temp.dg='TagName';
 		}
-		for (var i=0;i<sup.log.length;++i) {
-			this[i]=sup.log[i];
+		for (var i=0;i<this.length;++i) {
+			this[i]=this[i];
 		}
-		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<sup.log.length;++i) {eval('sup.log[i].on'+ii+'=f;')}}}}
+		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<this.length;++i) {eval('this[i].on'+ii+'=f;')}}}}
 		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
 	} else if (!!selector) {
 		ls();
 		if(selector.constructor==Array||selector.__proto__.__proto__.constructor==Object){for(let i of values(selector)){sup.log.push(i);}}else{sup.log.push(selector);}
+		sup.temp.dg='A';
 		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
 		return sup.log;
 	} else {
@@ -292,11 +313,23 @@ $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
 $.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
-var ape=function(name,move,o){let yss=document.createElement(name);for (let i in o) {yss[i]=o[i]};$(move)[0].appendChild(yss);}
+var ape=function(name,move,o){
+	if ((typeof name=='string')==true) {
+		let yss=document.createElement(name);
+		for (let i in o) {yss[i]=o[i]};
+		$(move).append(yss);
+		return yss;
+	} else if ((typeof name=='object')==true) {
+		for (let i in name) {for (let ii in name[i]) {
+			var yss=document.createElement(i);
+			for (let a in eval(`name[i].type`)) {yss[a]=eval(`name[i].type.${a}`);};
+		};$(name[i].url).append(yss);}
+	}
+}
 log(`%c
 SUP%c SUP %c ${new sup.fn.get("html").version} %c
 `,
-"color:red;font-size:15vw;text-shadow:0px 0px 3px white,0px 0px 5px black",
+"color:red;font-size:15vw;text-shadow:0px 0px 3px white,0px 0px 5px black;",
 "color:white;background-color:#3a3;border-radius:100px 0 0 100px",
 "color:white;background-color:red;border-radius:0 100px 100px 0",
 "color:red"
