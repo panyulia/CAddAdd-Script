@@ -5,6 +5,7 @@ let ls=function(){
 	sup.logs.prototype=[];
 	sup.logs.prototype.constructor=function(){};
 	sup.log.__proto__=sup.logs.prototype;
+	{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}};
 	sup.log.push();
 }
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
@@ -12,6 +13,8 @@ var clear=console.clear;
 var log=console.log;
 var error=console.error;
 var warn=console.warn;
+var timeout=window.setTimeout;
+var interval=window.setInterval;
 var ifair=function(i){if(i==undefined||i==null){return false;}else{return true;}}
 function createXHR () {
     var XHR = [
@@ -231,6 +234,7 @@ var sup={
 			for(let i=0;i<temp.length;++i){
 				this[this.length-1]!=temp[i].parentNode?sup.log.push(temp[i].parentNode):undefined;
 			}
+			{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}};
 			return sup.log.reverse();
 		},
 		gets : function() {
@@ -282,32 +286,23 @@ sup.fn.get=function(selector) {
 		ls();
 		if(selector.constructor==Array||selector.__proto__.__proto__.constructor==Object){for(let i of values(selector)){sup.log.push(i);}}else{sup.log.push(selector);}
 		sup.temp.dg='A';
-		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
+		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}};
 		return sup.log;
 	} else {
 		ls();
-		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}}
+		{for(let i in sup.fn){sup.log.__proto__[i]=sup.fn[i]}};
 		return sup.log;
 	}
 }
-sup.fn.write=function(obj){
+sup.write=sup.fn.write=function(obj){
 if(!!obj&&obj.constructor==Object){
 	for(let i in obj){
-		sup.fn[i]=obj[i];
+		this[i]=obj[i];
 	}
-	return sup.fn;
+	return this;
 }
-return sup.fn;
+return {};
 };
-sup.write=function(obj){
-if(!!obj&&obj.constructor==Object){
-	for(let i in obj){
-		sup[i]=obj[i];
-	}
-	return sup;
-}
-return sup;
-}
 var $=function(selector) {return new sup.fn.get(selector);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
