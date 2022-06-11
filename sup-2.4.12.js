@@ -241,10 +241,12 @@ sup.fn.write({
 	parent : function(selector) {
 		let r=$();
 		for(let i=0;i<this.length;++i){
-			this[i].parentNode!=document&&this[i].parentNode!=this[i-1].parentNode?r.push(this[i].parentNode):undefined;
+			this[i].parentNode!=document&&this[i].parentNode!=null&&this[i].parentNode!=undefined?r.push(this[i].parentNode):undefined;
 		}
 		r.sort();r.reverse();
-		for(let i=0;i<r.length;++i){}
+		for(let i=0;i<r.length;++i){
+			r[i]==r[i+1]?r.splice(i+1,i+1):undefined;
+		}
 		return r;
 	},
 	gets : function() {
@@ -252,7 +254,15 @@ sup.fn.write({
 		for(let i=0;i<this.length;++i){r[i]=this[i];};
 		return r;
 	},
-	version : "2.4.11"
+	children : function() {
+		let r=$();
+		for(let i=0;i<this.length;++i){
+			for(let ii of this[i].children){r.push(ii);}
+		}
+		r.sort();r.reverse();
+		return r;
+	},
+	version : "2.4.12"
 });
 sup.fn.get=function(selector) {
 	this.__proto__=[];
