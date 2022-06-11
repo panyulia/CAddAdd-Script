@@ -239,29 +239,28 @@ sup.fn.write({
 	},
 	remove : function() {for (let i=0;i<this.length;++i) {this[i].remove()}},
 	parent : function(selector) {
-		let temp=this;
-		for(let i=0;i<temp.length;++i){
-			this[this.length-1]!=temp[i].parentNode?this.push(temp[i].parentNode):undefined;
+		let r=$();
+		for(let i=0;i<this.length;++i){
+			this[i].parentNode!=document&&this[i].parentNode!=this[i-1].parentNode?r.push(this[i].parentNode):undefined;
 		}
-		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}};
-		return this.reverse();
-	},
-	gets : function() {
-		let r=values(this);
-		r.length=r.length-1;
+		r.sort();r.reverse();
+		for(let i=0;i<r.length;++i){}
 		return r;
 	},
-	version : "2.4.10"
+	gets : function() {
+		let r=[];
+		for(let i=0;i<this.length;++i){r[i]=this[i];};
+		return r;
+	},
+	version : "2.4.11"
 });
 sup.fn.get=function(selector) {
-	let temp=this.__proto__.constructor;
 	this.__proto__=[];
-	this.__proto__.constructor=temp;
+	this.__proto__=sup.fn;
 	sup.temp.dg=undefined;
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
 			window.onload=selector;
-			window.onload();
 			sup.temp.dg='fun';
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
@@ -293,10 +292,8 @@ sup.fn.get=function(selector) {
 	} else if (!!selector) {
 		if(selector.constructor==Array||selector.__proto__.__proto__.constructor==Object){for(let i of values(selector)){this.push(i);}}else{this.push(selector);}
 		sup.temp.dg='A';
-		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}};
 		return this;
 	} else {
-		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}};
 		return this;
 	}
 }
