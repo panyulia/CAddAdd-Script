@@ -312,16 +312,3 @@ $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
 $.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
-var ape=function(name,move,o){
-	if ((typeof name=='string')==true) {
-		let yss=document.createElement(name);
-		for (let i in o) {yss[i]=o[i]};
-		$(move).append(yss);
-		return yss;
-	} else if ((typeof name=='object')==true) {
-		for (let i in name) {for (let ii in name[i]) {
-			var yss=document.createElement(i);
-			for (let a in eval(`name[i].type`)) {yss[a]=eval(`name[i].type.${a}`);};
-		};$(name[i].url).append(yss);}
-	}
-}
