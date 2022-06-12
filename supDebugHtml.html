@@ -89,11 +89,17 @@
 				devGit!=null?window.open(`https://github.dev/${devGit}`):undefined;
 			});
 			$(".open SUP").mouseup(function(){github();});
-			$(".run javascript").mouseup(function(){});
-			addWindow=function(width,height){
-				ape("div","body",{style:`background: #fff;width: ${width};height: ${height};position: absolute;left: 0;top: 0;`});
+			addWindow=function(width,height,x,y){
+				let element=$(",div");
+				element.setAttribute("class","windows");
+				element.style=`background: #fff;width: ${width};height: ${height};position: absolute;left: ${x};top: ${y};`;
+				$("body").append(element);
 				return $(".windows");
 			};
+			$(".run javascript").mouseup(function(){
+				let height="150px";
+				addWindow("250px",height,"0px","calc(100vh - 35px - "+height+")");
+			});
 		});
 	</script>
 </head>
