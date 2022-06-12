@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>debug</title>
+	<script src="jquery-3.6.0.js"></script>
+	<script src="sup.js"></script>
+	<style>
+		*{margin: 0;padding: 0;border-radius: 7px;}
+		html{
+			cursor: default;
+			overflow: hidden;
+			background: url("win11.jpg");
+			background-size: 100vw 100vh;
+			background-repeat: no-repeat;
+			display: flex;
+			min-height: 100vh;
+			align-items: flex-end;
+			justify-content: center;
+		}
+		div#mouseRight{
+			transition: 0.1s all ease;
+			opacity: 0;
+			background-color: #0007;
+			width: 150px;
+			height: auto;
+			display: none;
+			position: absolute;
+			z-index: 99999999;
+		}
+		div#mouseRight p{
+			overflow: hidden;
+			width: 150px;
+			color: #fff;
+			z-index: 100000000;
+		}
+		div#mouseRight p:hover{
+			background-color: #00f;
+		}
+		div#tray{
+			display: flex;
+			min-width: 100vw;
+			min-height: 35px;
+			align-items: center;
+			justify-content: center;
+			background-color: #0008;
+			box-sizing: border-box;
+		}
+		div p{
+			border-radius: 0;
+			height: 3ex;
+			display: flex;
+			align-items: center;
+		}
+	</style>
+	<script>
+		$(function(){
+			$("#mouseRight").html($("#mouseRight").html().replace(/\{\{(.*[A-z])\}\}/gi,"<p class='$1 mouseText'>$1</p>"));
+			$(".resual").text("刷新");
+			$(".open github").text("打开GitHub");
+			$(".open githubYou").text("打开你的Github");
+			$(".open githubDev").text("打开编辑Github");
+			$(".open SUP").text("打开SUP-Github");
+			$(".run javascript").text("运行javascript");
+			for(let i=0;i<$(".mouseText").length;++i){
+				$(".mouseText")[i].innerHTML=`&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;${$(".mouseText")[i].innerHTML}`;
+			}
+			$(".mouseText")[0].style.setProperty("border-radius","7px 7px 0 0");
+			$(".mouseText")[$(".mouseText").length-1].style.setProperty("border-radius","0 0 7px 7px");
+			$("html").contextmenu(function(){return false});
+			$("html").mouseup(function(e){
+				e.button==2?(function(){
+					$("#mouseRight").css({left:e.pageX+"px",top:e.pageY+"px",display:"block"});
+					sleep(function(){$("#mouseRight").css("opacity","1");},0);
+				})():e.button==0?(function(){$("#mouseRight").css("opacity","0");sleep(function(){
+					$("#mouseRight").css("display","none");
+				},100);})():undefined;
+			});
+			$(".resual").mouseup(function(){for(let i in globalThis){globalThis[i]="";}});
+			$(".open github").mouseup(function(){window.open("https://github.com")});
+			$(".open githubYou").mouseup(function(){
+				let youGit=window.prompt(`请输入你的GitHub库的名字
+比如:panyulia/javascript`);
+				youGit!=null?window.open(`https://github.com/${youGit}`):undefined;
+			});
+			$(".open githubDev").mouseup(function(){
+				let devGit=window.prompt(`请输入你的GitHub库的名字
+比如:panyulia/javascript`);
+				devGit!=null?window.open(`https://github.dev/${devGit}`):undefined;
+			});
+			$(".open SUP").mouseup(function(){github();});
+			$(".run javascript").mouseup(function(){});
+			addWindow=function(width,height){
+				ape("div","body",{style:`background: #fff;width: ${width};height: ${height};position: absolute;left: 0;top: 0;`});
+				return $(".windows");
+			};
+		});
+	</script>
+</head>
+<body>
+	<div id="mouseRight">
+		{{resual}}
+		{{open github}}
+		{{open githubYou}}
+		{{open githubDev}}
+		{{open SUP}}
+		{{run javascript}}
+	</div>
+	<div id="tray">
+		<svg width="25" height="25" style="z-index: 102;border-radius: 3px;">
+			<path d="M0,0 L12,0 12,12 0,12 M13,0 L25,0 25,12 13,12 M0,13 L12,13 12,25 0,25 M13,13 L25,13 25,25 13,25" style="fill:#0af;stroke: #0af;stroke-width: 0.1px;"/>
+		</svg>
+	</div>
+</body>
+</html>
