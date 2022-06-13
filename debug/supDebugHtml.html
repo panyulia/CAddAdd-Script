@@ -6,7 +6,7 @@
 	<title>debug</title>
 	<script src="../sup-2.4.12.js"></script>
 	<style>
-		*{margin: 0;padding: 0;border-radius: 7px;}
+		*{margin: 0;padding: 0;border-radius: 7px;transition: .2s all ease-in}
 		html{
 			cursor: default;
 			overflow: hidden;
@@ -21,7 +21,8 @@
 		div#mouseRight{
 			transition: 0.1s all ease;
 			opacity: 0;
-			background-color: #0007;
+			background-color: #122;
+			box-shadow: 3px 3px 10px #000;
 			width: 150px;
 			height: auto;
 			display: none;
@@ -31,6 +32,7 @@
 		div#mouseRight p{
 			overflow: hidden;
 			width: 150px;
+			transition: 0s;
 			color: #fff;
 			z-index: 100000000;
 		}
@@ -54,6 +56,55 @@
 		}
 	</style>
 	<script>
+		let addWindow=function(width,height,x,y,classs,logo){
+				let element=$(",div");
+				element.setAttribute("class",classs);
+				element.style=`background: #122;
+				box-shadow: 3px 3px 10px #000;
+				width: calc(${width} - ${width} / 5);
+				height: calc(${height} - ${height} / 5);
+				position: absolute;
+				left: calc(${x} + ${width} / 10);
+				top: calc(${y} + ${height} / 10);
+				z-index: 0;
+				opacity: 0;
+				transition: 0.2s all ease-in-out;`;
+				sleep(function(){
+					let t=`<div style="background: #fff;width: 100%;height:auto;border-radius: 7px 7px 0 0;display:flex;align-items:center;justify-content:flex-end;" class="windowsUp">`;
+					let tt=`<svg style="position:absolute;" width="75" height="20">
+						<path d="M50,20 L50,20 50,0 75,0 75,25 50,20 M65,5 L65,5 55,15 M55,5 L55,5 65,15 M55,0 L55,0" class="tempClass" style="stroke:#000;stroke-width:1px;z-index:10;fill:#0000;"/>
+					</svg></div>`;
+					sleep(function(){
+						$(".tempClass").css("background","red");
+						$(".tempClass").click(function(){
+							$(".tempClass").parent().parent().parent().css({
+								opacity:"0"
+							});
+							sleep(function(){
+								$(".tempClass").parent().parent().parent().remove();
+								sleep(function(){$(".tempClass").rmAttr("class");},0);
+							},200);
+						});
+					},0);
+					element.style.opacity=1;
+					element.style.width=width;
+					element.style.height=height;
+					element.style.left=x;
+					element.style.top=y;
+					if(!!logo){if(typeof logo==='string'){
+						let a=`${t}${logo}&nbsp;${tt}`;
+						element.innerHTML=a+element.innerHTML;
+					}}else{
+						logo=`<svg width="20" height="20" style="position:absolute;border-radius: 0px;">
+							<path d="M1,1 L1,19 19,19 19,8 13,1 1,1 M13,1 L13,8 19,8" style="stroke: #fff;fill: #0000;"/>
+						</svg>`;
+						let a=`${t}${logo}&nbsp;${tt}`;
+						element.innerHTML=a+element.innerHTML;
+					};
+				},0);
+				$("body").append(element);
+				return $(`.${classs}`);
+			};
 		$(function(){
 			$("#mouseRight").html($("#mouseRight").html().replace(/\{\{(.*[A-z])\}\}/gi,"<p class='$1 mouseText'>$1</p>"));
 			$(".resual").text("刷新");
@@ -89,16 +140,11 @@
 				devGit!=null?window.open(`https://github.dev/${devGit}`):undefined;
 			});
 			$(".open SUP").mouseup(function(){github();});
-			addWindow=function(width,height,x,y){
-				let element=$(",div");
-				element.setAttribute("class","windows");
-				element.style=`background: #fff;width: ${width};height: ${height};position: absolute;left: ${x};top: ${y};`;
-				$("body").append(element);
-				return $(".windows");
-			};
 			$(".run javascript").mouseup(function(){
 				let height="150px";
-				addWindow("250px",height,"0px","calc(100vh - 35px - "+height+")");
+				addWindow("250px",height,"10px","calc(100vh - 35px - "+height+")","runWindow",`<svg width="32" height="20" style="position:absolute;left:0;border-radius: 0px;">
+						<path d="M10,2 L5,18 25,18 30,2 10,2 M11,10 L24,10 M18,6 L24,10 18,14" style="stroke: #05f;stroke-width: 3px;fill:#0000;"/>
+					</svg>`);
 			});
 		});
 	</script>
