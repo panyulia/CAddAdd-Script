@@ -255,13 +255,26 @@ sup.fn.write({
 		for(let i=0;i<this.length;++i){r[i]=this[i];};
 		return r;
 	},
-	children : function() {
+	child : function() {
 		let r=$();
 		for(let i=0;i<this.length;++i){
 			for(let ii of this[i].children){r.push(ii);}
 		}
 		r.sort();r.reverse();
 		return r;
+	},
+	replace : function(obj) {
+		try {
+		if(ifair(obj)&&(typeof obj=='object')==true&&obj.constructor==Object){
+			for(let i=0;i<this.length;++i){
+				for(let ii in obj){
+					this[i].innerHTML=this[i].innerHTML.replace(RegExp(`{{(.*)${ii}(.*)}}`,"g"),obj[ii])
+				}
+			}
+			return true;
+		}else{return {}}
+		}
+		catch (err) {error(err.message);return false}
 	},
 	version : "2.4.13"
 });
