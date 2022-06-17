@@ -3,6 +3,7 @@ var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=console.clear;
 var log=console.log;
 var error=console.error;
+var values=Object.values;
 var warn=console.warn;
 var sleep=window.setTimeout;
 var Sleep=window.clearTimeout;
@@ -124,8 +125,8 @@ var sup={
 		if (options.type=="GET"||options.type=="get") {xhr.send(null);} else {xhr.send(options.type);}
 		return options;
 	},
-	addEvent : function(name,f) {window.addEventListener(name,f);},
-	removeEvent : function(name,fname) {window.removeEventListener(name,fname);}
+	addEvent : window.addEventListener,
+	removeEvent : window.removeEventListener
 }
 sup.write=sup.fn.write=function(obj){
 if(!!obj&&obj.constructor==Object){
@@ -249,7 +250,7 @@ sup.fn.write({
 		}
 		return r;
 	},
-	gets : function() {
+	get : function() {
 		let r=[];
 		for(let i=0;i<this.length;++i){r[i]=this[i];};
 		return r;
@@ -262,11 +263,16 @@ sup.fn.write({
 		r.sort();r.reverse();
 		return r;
 	},
-	version : "2.4.12"
+	version : "2.4.13"
 });
-sup.fn.get=function(selector) {
-	this.__proto__=[];
-	this.__proto__=sup.fn;
+sup.fn.getElement=function(selector) {
+	try {
+		this.__proto__=[];
+		this.__proto__=sup.fn;
+	}
+	catch (error) {
+		return new sup.fn.getElement(selector);
+	}
 	sup.temp.dg=undefined;
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
@@ -300,14 +306,21 @@ sup.fn.get=function(selector) {
 		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}}
 		return this;
 	} else if (!!selector) {
-		if(selector.constructor==Array||selector.__proto__.__proto__.constructor==Object){for(let i of values(selector)){this.push(i);}}else{this.push(selector);}
-		sup.temp.dg='A';
+		if(selector.constructor==Array){
+			this.push();
+			for(let i of values(selector)){
+				this.push(i);
+			}
+		}else{
+			this.push(selector);
+		}
+		sup.temp.dg='Array';
 		return this;
 	} else {
 		return this;
 	}
 }
-var $=function(selector) {return new sup.fn.get(selector);}
+var $=function(selector) {return new sup.fn.getElement(selector);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
