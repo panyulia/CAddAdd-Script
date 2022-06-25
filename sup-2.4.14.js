@@ -263,6 +263,29 @@ sup.fn.write({
 			this[i].addEventListener("mouseup",up);
 		}
 	},
+	offset : function(options){
+		if ( arguments.length ) {
+			return options === undefined ?
+				this :
+				this.each( function( i ) {
+					jQuery.offset.setOffset( this, options, i );
+				} );
+		}
+		var rect, win,
+			elem = this[ 0 ];
+		if ( !elem ) {
+			return;
+		}
+		if ( !elem.getClientRects().length ) {
+			return { top: 0, left: 0 };
+		}
+		rect = elem.getBoundingClientRect();
+		win = elem.ownerDocument.defaultView;
+		return {
+			top: rect.top + win.pageYOffset,
+			left: rect.left + win.pageXOffset
+		};
+	},
 	version : "2.4.13"
 });
 sup.fn.getElements=function(selector) {
