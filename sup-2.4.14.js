@@ -3,6 +3,8 @@ var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=console.clear;
 var log=console.log;
 var error=console.error;
+var addEvent=window.addEventListener;
+var rmEvent=window.removeEventListener;
 var values=Object.values;
 var warn=console.warn;
 var sleep=window.setTimeout;
@@ -84,51 +86,9 @@ var sup={
 			}
 		} else {return obj;}
 		}
-	},
-	ajax : function(options) {
-		let xhr=new createXHR();
-		if ((typeof options == 'object') == true) {
-			if (options.type) {
-				if (options.url) {
-					if (options.async) {
-						if (options.username) {
-							if (options.password) {
-								xhr.open(options.type,options.url,options.async,options.username,options.password);
-							}
-						} else {
-							xhr.open(options.type,options.url,options.async);
-						}
-					} else {
-						xhr.open(options.type,options.url,true);
-					}
-				}
-			} else if (options.url) {
-				xhr.open("GET",options.url,true);
-			}
-			if (!!options.setRH&&options.constructor==Object) {
-				for (let i in options.setRH) {
-					xhr.setRequestHeader(i,options.setRH[i]);
-				}
-			}
-			if ((typeof options.xhr == 'function') == true) {
-				let newAjax={
-					readystatechange : function(f) {xhr.onreadystatechange=f;}
-				};
-				for (let i in newAjax) {
-					xhr[i]=newAjax[i];
-				}
-				options.xhr(xhr);
-				if (options.type=="GET"||options.type=="get") {xhr.send(null);} else {xhr.send(options.type);}
-				return options;
-			}
-		}
-		if (options.type=="GET"||options.type=="get") {xhr.send(null);} else {xhr.send(options.type);}
-		return options;
-	},
-	addEvent : window.addEventListener,
-	removeEvent : window.removeEventListener
+	}
 }
-sup.write=sup.fn.write=function(obj){
+sup.write=function(obj){
 if(!!obj&&obj.constructor==Object){
 	for(let i in obj){
 		this[i]=obj[i];
@@ -137,6 +97,9 @@ if(!!obj&&obj.constructor==Object){
 }
 return {};
 };
+sup.fn.write=sup.write;
+sup.readyTF=false;
+window.addEventListener("DOMContentLoaded",function(){sup.readyTF=true},false);
 sup.fn.write({
 	html : function(text) {
 		var sc="";
@@ -162,7 +125,16 @@ sup.fn.write({
 		}
 		return sc;
 	},
-	ready : function(f) {for (var i=0;i<this.length;++i) {f();}},
+	ready : function(waitF) {
+		let is=this;
+		if(sup.readyTF){
+			for(let i=0;i<this.length;++i){
+				waitF();
+			}
+		}else{
+			window.setTimeout(function(){is.ready(waitF);},0);
+		}
+	},
 	append : function(ae) {for (let i=0;i<this.length;++i) {this[i].appendChild(ae);}},
 	pause : function(f) {for (let i=0;i<this.length;++i) {this[i].pause();}},
 	play : function(f) {for (let i=0;i<this.length;++i) {this[i].play();}},
@@ -210,6 +182,8 @@ sup.fn.write({
 					this[i].style.setProperty(ii,names[ii]);
 				}
 			}
+			return this;
+		} else {
 			return this;
 		}
 	},
@@ -276,20 +250,33 @@ sup.fn.write({
 		}
 		catch (err) {error(err.message);return false}
 	},
+	constructor : Object,
+	hover : function(leave,over) {
+		for(let i=0;i<this.length;++i){
+			this[i].addEventListener("mouseover",over);
+			this[i].addEventListener("mouseleave",leave);
+		}
+	},
+	active : function(down,up) {
+		for(let i=0;i<this.length;++i){
+			this[i].addEventListener("mousedown",down);
+			this[i].addEventListener("mouseup",up);
+		}
+	},
 	version : "2.4.13"
 });
-sup.fn.getElement=function(selector) {
+sup.fn.getElements=function(selector) {
 	try {
 		this.__proto__=[];
 		this.__proto__=sup.fn;
 	}
 	catch (error) {
-		return new sup.fn.getElement(selector);
+		return new sup.fn.getElements(selector);
 	}
 	sup.temp.dg=undefined;
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
-			window.onload=selector;
+			onload=selector;
 			sup.temp.dg='fun';
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
@@ -318,14 +305,9 @@ sup.fn.getElement=function(selector) {
 		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<this.length;++i) {eval('this[i].on'+ii+'=f;')}}}}
 		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}}
 		return this;
-	} else if (!!selector) {
-		if(selector.constructor==Array){
-			this.push();
-			for(let i of values(selector)){
-				this.push(i);
-			}
-		}else{
-			this.push(selector);
+	} else if (!!selector&&(typeof selector)!="string") {
+		for(let i of values(selector)){
+			this.push(i);
 		}
 		sup.temp.dg='Array';
 		return this;
@@ -333,7 +315,7 @@ sup.fn.getElement=function(selector) {
 		return this;
 	}
 }
-var $=function(selector) {return new sup.fn.getElement(selector);}
+var $=function(selector) {return new sup.fn.getElements(selector);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=function(name,f) {return new sup.addEvent(name,f);}
