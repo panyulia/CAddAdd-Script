@@ -379,7 +379,7 @@ sup.fn.getElements=function(selector) {
 	sup.temp.dg=undefined;
 	if ((typeof selector=="function")==true) {
 		window.setTimeout(function(){
-			onload=selector;
+			new sup.fn.getElements("html").ready(selector);
 			sup.temp.dg='fun';
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
