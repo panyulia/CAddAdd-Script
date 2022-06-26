@@ -57,7 +57,7 @@ var sup={
 		try{
 		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
 			for (let i=0;i<fl;++i) {
-				obj();
+				obj(i);
 			}
 			return obj;
 		} else if (obj.constructor==Array||obj.__proto__.__proto__.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
@@ -73,7 +73,7 @@ var sup={
 		catch(err){
 		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
 			for (let i=0;i<fl;++i) {
-				obj();
+				obj(i);
 			}
 			return obj;
 		} else if (obj.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
@@ -85,6 +85,39 @@ var sup={
 				fl(i);
 			}
 		} else {return obj;}
+		}
+	},
+	moveOffset : function(element, options) {
+		let posi=window.getComputedStyle(element).position,
+		thisElement=function(IS){
+			let temp=[IS];
+			return new sup.fn.getElements(temp);
+		},mvPosi,mvT,mvL,props={};
+		if(posi === "static"){
+			element.style.position="relative";
+		}
+		let thisOffset=thisElement(element).offset(),
+		top=window.getComputedStyle(element).top,
+		left=window.getComputedStyle(element).left;
+		let eee = ( posi === "absolute" || posi === "fixed" ) && ( top + left ).indexOf( "auto" ) > -1;
+		if(eee){
+			mvPosi=thisElement.posi();
+			mvT=mvPosi.top;
+			mvL=mvPosi.left;
+		}else{
+			mvT=parseFloat(top) || 0;
+			mvL=parseFloat(left) || 0;
+		}
+		if(options.top != null){
+			props.top=(options.top-thisOffset.top)+mvT;
+		}
+		if(options.left != null){
+			props.left=(options.left-thisOffset.left)+mvL;
+		}
+		if("using" in options){
+			options.using.call(element,props);
+		}else{
+			thisElement(element).css(props);
 		}
 	}
 }
@@ -101,6 +134,44 @@ sup.fn.write=sup.write;
 sup.readyTF=false;
 window.addEventListener("DOMContentLoaded",function(){sup.readyTF=true},false);
 sup.fn.write({
+	posi : function() {
+		let is=this;
+		if ( !this[ 0 ] ) {
+			return;
+		}
+		var offsetParent, offset, doc,
+			elem = this[ 0 ],
+			parentOffset = { top: 0, left: 0 };
+		if ( window.getComputedStyle(elem).position === "fixed" ) {
+			offset = elem.getBoundingClientRect();
+		} else {
+			let tm=function(elem){
+				let a=[elem];
+				return new sup.fn.getElements(a);
+			}
+			var a=function(string){
+				return Number(string.slice(0,string.length-2));
+			}
+			offset = this.offset();
+			doc = elem.ownerDocument;
+			offsetParent = elem.offsetParent || doc.documentElement;
+			while ( offsetParent &&
+				( offsetParent === doc.body || offsetParent === doc.documentElement ) &&
+				window.getComputedStyle(offsetParent).position === "static" ) {
+				offsetParent = offsetParent.parentNode;
+			}
+			if ( offsetParent && offsetParent !== elem && offsetParent.nodeType === 1 ) {
+				parentOffset = tm( offsetParent ).offset();
+				parentOffset.top += a(window.getComputedStyle(offsetParent).borderTopWidth);
+				parentOffset.left += a(window.getComputedStyle(offsetParent).borderLeftWidth);
+			}
+		}
+		//
+		return {
+			top: offset.top - parentOffset.top - a(window.getComputedStyle(elem).marginTop),
+			left: offset.left - parentOffset.left - a(window.getComputedStyle(elem).marginLeft)
+		};
+	},
 	html : function(text) {
 		var sc="";
 		for (var i=0;i<this.length;++i) {
@@ -159,11 +230,11 @@ sup.fn.write({
 	for : function( obj, fl) {
 		if (!fl) {
 			for (var i=0;i<this.length;++i) {
-				obj();
+				obj(i);
 			}
 		} else {
 			for (var i=0;i<fl;++i) {
-				obj();
+				obj(i);
 			}
 		}
 		return this;
@@ -171,6 +242,7 @@ sup.fn.write({
 	addEvent : function(names,f) {for (let i=0;i<this.length;++i) {this[i].addEventListener(names,f);}},
 	removeEvent : function(names,fname) {for (let i=0;i<this.length;++i) {this[i].removeEventListener(names,fname);}},
 	css : function (names,value) {
+		let is=this;
 		if (!!names&&!!value&&names.constructor==String&&value.constructor==String) {
 			for (var i=0;i<this.length;++i) {
 				this[i].style.setProperty(names,value);
@@ -179,10 +251,17 @@ sup.fn.write({
 		} else if (!!names&&!value&&names.constructor==Object) {
 			for (var i=0;i<this.length;++i) {
 				for (var ii in names) {
+					//is ing"PX" text
+					if(!!Number(names[ii])){
+						names[ii]+="px";
+					}
+
 					this[i].style.setProperty(ii,names[ii]);
 				}
 			}
 			return this;
+		} else if (typeof names=="string"&&value==undefined) {
+			return window.getComputedStyle(is[0])[names];
 		} else {
 			return this;
 		}
@@ -264,12 +343,13 @@ sup.fn.write({
 		}
 	},
 	offset : function(options){
+		let is=this;
 		if ( arguments.length ) {
 			return options === undefined ?
 				this :
-				this.each( function( i ) {
-					jQuery.offset.setOffset( this, options, i );
-				} );
+				this.for(function(e){
+					sup.moveOffset(is[e],options);
+				});
 		}
 		var rect, win,
 			elem = this[ 0 ];
