@@ -1,4 +1,3 @@
-"use strict";
 var github=function(){window.open("https://github.com/panyulia/Javascript");}
 var clear=console.clear;
 var log=console.log;
@@ -368,7 +367,7 @@ sup.fn.write({
 	},
 	version : "2.4.13"
 });
-sup.fn.getElements=function(selector) {
+sup.fn.getElements=function(selector,filters) {
 	try {
 		this.__proto__=[];
 		this.__proto__=sup.fn;
@@ -383,6 +382,7 @@ sup.fn.getElements=function(selector) {
 			sup.temp.dg='fun';
 		},0)
 	} else if (!!selector && (typeof selector=="string")==true) {
+		// if selector, push is this...
 		if (!selector) {
 			return this;
 		} else if (selector[0] == "#") {
@@ -404,8 +404,30 @@ sup.fn.getElements=function(selector) {
 		}
 		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<this.length;++i) {eval('this[i].on'+ii+'=f;')}}}}
 		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}}
+		// is if filters Object
+		if(!!filters){if(filters.__proto__.constructor==Object){
+			let is=this;
+			let temp=new sup.fn.getElements(selector);
+			is.splice(0,is.length);
+			for(let i=0;i<temp.length;++i){
+				for(let f in filters){
+					if(temp[i].getAttribute(f)==filters[f]){
+						is.push(temp[i]);
+						is.sort();
+						for(let i=0;i<is.length;++i){
+							is[i]===is[i+1]?is.splice(i+1,i+1):undefined;
+						}
+					}
+				}
+			}
+		}}
+		// return is end
 		return this;
 	} else if (!!selector&&(typeof selector)!="string") {
+		if(selector==document){
+			this.push(document);
+			return this;
+		}
 		for(let i of values(selector)){
 			this.push(i);
 		}
@@ -415,8 +437,14 @@ sup.fn.getElements=function(selector) {
 		return this;
 	}
 }
-var $=function(selector) {return new sup.fn.getElements(selector);}
+let SUP=sup;
+sup=function(selector,filters){return new sup.fn.getElements(selector,filters)};
+for(let i in SUP){
+	sup[i]=SUP[i];
+}
+SUP=undefined;
+var $=function(selector,filters) {return new sup.fn.getElements(selector,filters);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
-$.addEvent=function(name,f) {return new sup.addEvent(name,f);}
-$.removeEvent=function(name,fname) {return new sup.removeEvent(name,fname);}
+$.addEvent=window.addEventListener;
+$.removeEvent=window.removeEventListener;
