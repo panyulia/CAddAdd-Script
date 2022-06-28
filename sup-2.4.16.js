@@ -329,16 +329,16 @@ sup.fn.write({
 		catch (err) {error(err.message);return false}
 	},
 	constructor : Object,
-	hover : function(leave,over) {
+	hover : function(over,leave) {
 		for(let i=0;i<this.length;++i){
-			this[i].addEventListener("mouseover",over);
-			this[i].addEventListener("mouseleave",leave);
+			this[i].onmouseover=over;
+			this[i].onmouseleave=leave;
 		}
 	},
 	active : function(down,up) {
 		for(let i=0;i<this.length;++i){
-			this[i].addEventListener("mousedown",down);
-			this[i].addEventListener("mouseup",up);
+			this[i].onmousedown=down;
+			this[i].onmouseup=up;
 		}
 	},
 	offset : function(options){
