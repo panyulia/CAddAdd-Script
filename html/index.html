@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>debug</title>
+	<script src="jquery-3.6.0.js"></script>
+	<script src="sup.js"></script>
+	<style>
+		*{
+			margin: 0;
+			padding: 0;
+			cursor: none;
+			background-repeat: no-repeat;
+			background-size: 100vw 100vh;
+			border-radius: 10px;
+
+			--background-image: url("background.jpg");
+			--appColor: #fff;
+		}
+		html{
+			transition: 0s;
+			overflow: hidden;
+			width: 100vw;
+			height: 100vw;
+		}
+		#defaultDesktop{
+			position: absolute;
+			transition: 0s;
+			top: 0;
+			left: 0;
+			border-radius: 0;
+			width: 100vw;
+			height: 100vh;
+			z-index: 0;
+			background-image: var(--background-image);
+		}
+		.nbspSvg{
+			background: #fff7;
+		}
+		#cursor{
+			z-index: 99999999;
+			position: absolute;
+			top: -100vh;
+			left: -100vw;
+			background: #fff7;
+			border-radius: 100px;
+			border: 2px solid #0009;
+			pointer-events: none;
+		}
+		#down{
+			--height: 50px;
+			width: 100vw;
+			transition: 0s;
+			height: var(--height);
+			position: absolute;
+			top: calc(100vh - var(--height) - 5px);
+			left: 0;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			z-index: 0;
+		}
+		#app,#run{
+			width: auto;
+			transition: 0s;
+			background: #fff7;
+			cursor: default;
+			position: static;
+			height: var(--height);
+			display: flex;
+			align-items: center;
+		}
+		#app img{
+			background: #fff;
+			width: 40px;
+			height: 40px;
+		}#run img{
+			background: #fff;
+			width: 40px;
+			height: 40px;
+		}
+		.nbsp{
+			width: 20px;
+			height: var(--height);
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+		.app{
+			display: flex;
+			background: var(--appColor);
+			width: 40px;
+			height: 40px;
+		}
+		@media(prefers-color-scheme: dark){
+			#app,#run{
+				background: #0007;
+			}
+			#cursor{
+				background: #0007;
+				border: 2px solid #fff9;
+			}
+			.nbspSvg{
+				background: #0007;
+			}
+			*{
+				--appColor: #000;
+			}
+		}
+	</style>
+	<script>
+		$(function(){
+			// is cursor settings function
+			$("*").css("cursor","none");
+			let setCur=function(url){
+				// is url a file url "./cursors" + your url
+				// or a (url) -> ("myCursor") => "./cursors/myCursor"
+				$("#cursor").attr("src","cursors/"+url);
+			}
+			setCur("default/array.svg");
+			$("html").pointermove(function(e){
+				if(e.pointerType=="mouse"){
+					let width=window.parseFloat(window.getComputedStyle($("#cursor")[0]).width);
+					let height=window.parseFloat(window.getComputedStyle($("#cursor")[0]).height);
+					$("#cursor").offset({top:e.pageY-(height/2),left:e.pageX-(width/2)});
+				}else if(e.pointerType=="touch"){
+					$("#cursor").css("display","none");
+				}
+			});
+			(function(){
+				let temp=function(e){
+					if(e.pointerType=="touch"){
+						$("#cursor").css("display","none");
+					}else if(e.pointerType=="mouse"){
+						$("#cursor").css("display","block");
+					}
+				}
+				$("html").pointerdown(temp);
+				$("html").pointerup(temp);
+				$("html").pointerover(temp);
+				$("html").pointerleave(temp);
+			})()
+			$("html").hover(function(){
+				$("#cursor").css("display","block");
+			},function(){
+				$("#cursor").css("display","none");
+			});
+
+			$("#down").replace({// replace {{nbsp}} = this
+				nbsp:`<div class="nbsp">
+				<svg width="3" height="25" class="nbspSvg"></svg>
+				</div>`
+			});
+			// up is before start
+			let beishu=1;
+			let oTime=0.3*beishu;
+			let styleWrite=function(Is,obj){// set Element is style Function
+				for(let i in obj){
+					Is.style.setProperty(i,obj[i]);
+				}
+			}
+			let runApp=function(){// app start Function
+				let is=this;
+				is.setAttribute("isTop",is.getBoundingClientRect().top);
+				is.setAttribute("isLeft",is.getBoundingClientRect().left);
+				is.setAttribute("class","app isRun");
+				styleWrite(is,{
+					width: "100vw",
+					height: "100vh",
+					position:"fixed",
+					top: is.getBoundingClientRect().top+"px",
+					left: is.getBoundingClientRect().left+"px",
+					"border-radius":"0px"
+				})
+				styleWrite(is.children[0],{
+					opacity:"0",
+					width:"100vw",
+					height:"100vh"
+				})
+				sleep(function(){
+					styleWrite(is.children[0],{
+						display:"none"
+					})
+				},oTime*1000)
+				sleep(function(){
+					sup.moveOffset(is,{top:0,left:0});
+					is.onmouseup=null;
+				},0);
+			}
+			$(".app").mouseup(function(){let is=this;runApp.call(is)});
+			let exitApp=function(appElement){// app exit Function
+				let aE=appElement;
+				styleWrite(aE,{
+					width: "40px",
+					height: "40px",
+					top: aE.getAttribute("isTop")+"px",
+					left: aE.getAttribute("isLeft")+"px",
+					"border-radius":"10px"
+				})
+				styleWrite(aE.children[0],{
+					display:"block",
+					opacity:"1",
+					width:"40px",
+					height:"40px"
+				})
+				sleep(function(){
+					styleWrite(aE,{
+						position:"relative",
+						transition:"0s",
+						top:"0px",
+						left:"0px"
+					})
+					sleep(function(){
+						styleWrite(aE,{
+							transition:"",
+							position:"static",
+							top:"auto",
+							left:"auto"
+						})
+						aE.setAttribute("class","app");
+					},10)
+				},oTime*1000)
+				sleep(function(){aE.onmouseup=function(){let is=this;runApp.call(is)};},0);
+			}
+			addEvent("keyup",function(e){
+				if(e.key=="Escape"&&document.querySelector(".isRun")!==null){
+					exitApp(document.querySelector(".isRun"));
+				}
+			})
+			$("html").contextmenu(function(){
+				return false;
+			});
+			// is end fun
+			$("*","#cursor").css("transition","var(--transitio-s) all ease")
+			$("*","#cursor").css("--transition-s",oTime+"s");
+		})
+	</script>
+</head>
+<body>
+	<img id="cursor">
+	<div id="defaultDesktop">
+		<div id="down">
+			<div id="app">
+				&nbsp;
+				<div class="app" id="settings"><img src="appImg/settings.jpg"/></div>
+				&nbsp;
+			</div>
+			{{ nbsp }}
+			<div id="run">
+				&nbsp;
+				&nbsp;
+			</div>
+		</div>
+	</div>
+</body>
+</html>
