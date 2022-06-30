@@ -48,42 +48,34 @@ var nameX=function(selector) {
 var sup={
 	temp:{},
 	fn:[],
-	for : function( obj, fl ) {
+	for : function( obj, fun ) {
 		/*
 		for the of => Array is []
 		for the in => Object is {}
 		*/
 		try{
-		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
-			for (let i=0;i<fl;++i) {
-				obj(i);
+			if(obj.__proto__.constructor==Number){
+				for(let i=0;i<=obj;++i){
+					fun(i);
+				}
+			}else{
+				for(let i in obj){
+					fun(i);
+				}
 			}
 			return obj;
-		} else if (obj.constructor==Array||obj.__proto__.__proto__.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i of obj) {
-				fl(i);
-			}
-		} else if (obj.constructor==Object||obj.__proto__.__proto__.constructor==Object&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i in obj) {
-				fl(i);
-			}
-		} else {return obj;}
 		}
 		catch(err){
-		if (!!obj&&!!fl&&obj.constructor==Function&&fl.constructor==Number) {
-			for (let i=0;i<fl;++i) {
-				obj(i);
+			if(obj.__proto__.constructor==Array){
+				for(let i=0;i<obj.length;++i){
+					fun(i);
+				}
+			}else{
+				for(let i=0;i<=obj.length;++i){
+					fun(i);
+				}
 			}
 			return obj;
-		} else if (obj.constructor==Array&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i of obj) {
-				fl(i);
-			}
-		} else if (obj.constructor==Object&&fl.constructor==Function&&!!obj&&!!fl) {
-			for (let i in obj) {
-				fl(i);
-			}
-		} else {return obj;}
 		}
 	},
 	moveOffset : function(element, options) {
@@ -367,7 +359,7 @@ sup.fn.write({
 	},
 	version : "2.4.13"
 });
-sup.fn.getElements=function(selector,filters) {
+sup.fn.getElements=function(selector,filters,or) {
 	try {
 		this.__proto__=[];
 		this.__proto__=sup.fn;
@@ -415,11 +407,24 @@ sup.fn.getElements=function(selector,filters) {
 						is.push(temp[i]);
 						is.sort();
 						for(let i=0;i<is.length;++i){
-							is[i]===is[i+1]?is.splice(i+1,i+1):undefined;
+							is[i]===is[i+1]?is.splice(i+1,i+2):undefined;
 						}
 					}
 				}
 			}
+		}else if(typeof filters=='string'){
+			let is=this;
+			let This=new sup.fn.getElements(selector);
+			let fi=new sup.fn.getElements(filters);
+			let e=0;
+			sup.for(Object.assign([],fi),function(i){
+				sup.for(Object.assign([],This),function(ii){
+					if(This[ii]==fi[i]){
+						is.splice(ii-e,1);
+					}
+				});
+				e++;
+			});
 		}}
 		// return is end
 		return this;
@@ -443,7 +448,7 @@ for(let i in SUP){
 	sup[i]=SUP[i];
 }
 SUP=undefined;
-var $=function(selector,filters) {return new sup.fn.getElements(selector,filters);}
+var $=function(selector,filters,or) {return new sup.fn.getElements(selector,filters,or);}
 $.for=function(obj,fl) {return sup.for(obj,fl);}
 $.ajax=function(options) {return sup.ajax(options);}
 $.addEvent=window.addEventListener;
