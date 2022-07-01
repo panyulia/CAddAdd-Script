@@ -56,11 +56,11 @@ var sup={
 		try{
 			if(obj.__proto__.constructor==Number){
 				for(let i=0;i<=obj;++i){
-					fun(i);
+					fun.call(obj,i);
 				}
 			}else{
 				for(let i in obj){
-					fun(i);
+					fun.call(obj,i);
 				}
 			}
 			return obj;
@@ -68,11 +68,11 @@ var sup={
 		catch(err){
 			if(obj.__proto__.constructor==Array){
 				for(let i=0;i<obj.length;++i){
-					fun(i);
+					fun.call(obj,i);
 				}
 			}else{
 				for(let i=0;i<=obj.length;++i){
-					fun(i);
+					fun.call(obj,i);
 				}
 			}
 			return obj;
@@ -218,14 +218,15 @@ sup.fn.write({
 		}
 		return sc;
 	},
-	for : function( obj, fl) {
-		if (!fl) {
+	for : function( obj, fun) {
+		let is=this;
+		if (!fun) {
 			for (var i=0;i<this.length;++i) {
-				obj(i);
+				obj.call(is,i);
 			}
 		} else {
-			for (var i=0;i<fl;++i) {
-				obj(i);
+			for (var i=0;i<fun;++i) {
+				obj.call(is,i);
 			}
 		}
 		return this;
@@ -323,14 +324,14 @@ sup.fn.write({
 	constructor : Object,
 	hover : function(over,leave) {
 		for(let i=0;i<this.length;++i){
-			this[i].onmouseover=over;
-			this[i].onmouseleave=leave;
+			this[i].onpointerover=over;
+			this[i].onpointerleave=leave;
 		}
 	},
 	active : function(down,up) {
 		for(let i=0;i<this.length;++i){
-			this[i].onmousedown=down;
-			this[i].onmouseup=up;
+			this[i].onpointerdown=down;
+			this[i].onpointerup=up;
 		}
 	},
 	offset : function(options){
