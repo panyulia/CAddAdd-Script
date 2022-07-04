@@ -395,8 +395,36 @@ sup.fn.getElements=function(selector,filters,or) {
 			}
 			sup.temp.dg='TagName';
 		}
-		{const temp=["animationend","animationiteration","animationstart","auxclick","beforecopy","beforecut","beforepaste","beforexrselect","cancel","canplay","canplaythrough","change","click","close","contextlost","contextmenu","contextrestored","copy","cuechange","cut","dblclick","drag","dragend","dragenter","dragleave","dragover","dragstart","drop","durationchange","emptied","ended","error","formdata","fullscreenchange","fullscreenerror","gotpointercapture","input","invalid","keydown","keypress","keyup","loadeddata","loadedmetadata","loadstart","lostpointercapture","mousedown","mouseenter","mouseleave","mousemove","mouseout","mouseover","mouseup","mousewheel","paste","playing","pointercancel","pointerdown","pointerenter","pointerleave","pointermove","pointerout","pointerover","pointerrawupdate","pointerup","progress","ratechange","reset","resize","scroll","search","securitypolicyviolation","seeked","seeking","select","selectionchange","selectstart","slotchange","stalled","submit","suspend","timeupdate","toggle","transitioncancel","transitionend","transitionrun","transitionstart","volumechange","waiting","webkitanimationend","webkitanimationiteration","webkitanimationstart","webkitfullscreenchange","webkitfullscreenerror","webkittransitionend","wheel"];for (let ii of temp) {sup.fn[ii]=function(f){for (let i=0;i<this.length;++i) {eval('this[i].on'+ii+'=f;')}}}}
-		{for(let i in sup.fn){this.__proto__[i]=sup.fn[i]}}
+		{
+			let bds=/(.*)on(.*)/;
+			let temp=new Array();
+			for (let i in this[0]) {
+				if(!!bds.exec(i)){
+					if(!bds.exec(i)[1]){
+						i!="onpause"&&i!="onplay"&&i!="onfocus"&&i!="onblur"?temp.push(i):undefined;
+					}else if(bds.exec(i)[1].search("onc")!=-1){
+						temp.push(i);
+					}else if(bds.exec(i)[1].search("on")==0){
+						temp.push(i);
+					}
+				}
+			}
+			for (let i=0;i<temp.length;++i) {
+				temp[i]=temp[i].slice(2);
+			}
+			for (let ii of temp) {
+				sup.fn[ii]=function(f){
+					for (let i=0;i<this.length;++i) {
+						eval('this[i].on'+ii+'=f;')
+					}
+				}
+			}
+		}
+		{
+			for(let i in sup.fn){
+				this.__proto__[i]=sup.fn[i]
+			}
+		}
 		// is if filters Object
 		if(!!filters){if(filters.__proto__.constructor==Object){
 			let is=this;
