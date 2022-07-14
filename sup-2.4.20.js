@@ -358,7 +358,7 @@ sup.fn.write({
 			left: rect.left + win.pageXOffset
 		};
 	},
-	version : "2.4.13"
+	version : "2.4.20"
 });
 sup.fn.getElements=function(selector,filters,or) {
 	try {
